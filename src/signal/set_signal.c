@@ -3,7 +3,7 @@
 static void	signal_interrupt_handler(int sig){
 	if (sig != SIGINT)
 		return;
-	printf("\n");
+	ft_printf("\n");
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();

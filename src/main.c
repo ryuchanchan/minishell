@@ -18,7 +18,7 @@ void	destructor(void)
 
 static void	minishell(char *line)
 {
-	printf("%s\n", line);
+	ft_printf("%s\n", line);
 }
 
 static void update_line(char **line_p)
@@ -38,7 +38,7 @@ int	main(int argc, char **argv, char **envp)
 	line = readline(PREFIX_SHELL);
 	while (line)
 	{
-		if (strlen(line) <= 0)//libc
+		if (ft_strlen(line) <= 0)
 		{
 			update_line(&line);
 			continue;
@@ -47,7 +47,7 @@ int	main(int argc, char **argv, char **envp)
 		add_history(line);
 		update_line(&line);
 	}
-	printf("exit\n");
+	ft_printf("exit\n");
 	rl_clear_history();
 	return (0);
 }

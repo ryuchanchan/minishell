@@ -1,0 +1,9 @@
+*.out
+*.a
+*.d
+*.o
+*_test.c
+main.c
+.vscode
+printfTester
+gnl-tester-tokyo

@@ -9,7 +9,7 @@ void	destructor(void)
 	status = system("leaks minishell &> result_leaks");
 	if (status)
 	{
-		write(2, "memory leak is found\n", 8);
+		write(2, "Memory leak is found!\n", 8);
 		system("cat result_leaks >/dev/stderr");
 		exit(1);
 	}

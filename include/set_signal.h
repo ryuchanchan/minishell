@@ -1,5 +1,5 @@
-#ifndef MS_SIGNAL_H
-# define MS_SIGNAL_H
+#ifndef SET_SIGNAL_H
+# define SET_SIGNAL_H
 
 # include <signal.h>
 # include <stdio.h>

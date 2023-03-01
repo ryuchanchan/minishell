@@ -8,7 +8,7 @@ LFLAGS		=	-L$(DIR_RL)/lib -lreadline
 
 DIR_SRC		=	./src
 SRCS		=	$(DIR_SRC)/main.c			\
-				$(DIR_SRC)/set_signal.c
+				$(DIR_SRC)/signal/set_signal.c
 OBJS		=	$(SRCS:.c=.o)
 
 all : $(NAME)

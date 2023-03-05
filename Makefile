@@ -7,9 +7,10 @@ LFLAGS		=	-L$(DIR_RL)/lib -lreadline
 LIBFT		=	./libft/libft.a
 
 DIR_SRC		=	./src
-SRCS		=	$(DIR_SRC)/main.c			\
-				$(DIR_SRC)/signal/set_signal.c \
-				$(DIR_SRC)/lexer/token.c
+SRCS		=	$(DIR_SRC)/main.c				\
+				$(DIR_SRC)/signal/set_signal.c	\
+				$(DIR_SRC)/lexer/token.c		\
+				$(DIR_SRC)/lexer/parser.c	
 OBJS		=	$(SRCS:.c=.o)
 
 all : $(NAME)

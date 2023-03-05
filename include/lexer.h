@@ -3,6 +3,7 @@
 
 # include "../libft/include/libft.h"
 # include <stdio.h>
+# include <fcntl.h> 
 
 typedef enum e_label {
     COMMAND,
@@ -35,4 +36,5 @@ typedef struct s_redirection {
 char	*ft_strndup(char const *s1, size_t n);
 t_list	*tokenizer(char *input);
 t_node	*parser(t_list *tokens);
+void    print_filenames(t_list *filenames, int *fdout);
 #endif

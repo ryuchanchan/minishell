@@ -21,6 +21,12 @@ static void	minishell(char *line)
 	t_list	*list;
 	t_list	*head;
 	t_node	*node;
+	t_list	*command;
+    int		fdin;
+    int		fdout;
+	int		pipe_fd[2];
+	int tmpin = dup(0);
+    int tmpout = dup(1);
 
 	// ft_printf("%s\n", line);
 	list = tokenizer(line);
@@ -31,6 +37,25 @@ static void	minishell(char *line)
 		list = list->next;
 	}
 	node = parser(head);
+	fdin = dup(tmpin);
+	while (node != NULL)
+	{
+		command = node->commands;
+		dup2(fdin, 0);
+		close(fdin);
+		if (node->next != NULL)
+		{
+			pipe(pipe_fd);
+			fdout = pipe_fd[1];
+			fdin = pipe_fd[0];
+		}
+		else
+			fdout = dup(tmpout);
+		print_filenames(node->filenames, &fdout);
+		dup2(fdout, 1);
+		close(fdout);
+	}
+	
 	
 }
 

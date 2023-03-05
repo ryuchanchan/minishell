@@ -27,6 +27,7 @@ static void	minishell(char *line)
 	int		pipe_fd[2];
 	int tmpin = dup(0);
     int tmpout = dup(1);
+	char **arr;
 
 	// ft_printf("%s\n", line);
 	list = tokenizer(line);
@@ -54,6 +55,7 @@ static void	minishell(char *line)
 		print_filenames(node->filenames, &fdout);
 		dup2(fdout, 1);
 		close(fdout);
+		arr = list_to_array(command);
 	}
 	
 	

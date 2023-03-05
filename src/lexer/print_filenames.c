@@ -48,3 +48,26 @@ void print_filenames(t_list *filenames, int *fdout)
         filenames = filenames->next;
     }
 }
+
+char    **list_to_array(t_list *list)
+{
+    size_t  i;
+    size_t  len;
+    char    **arr;
+
+    len = (size_t)ft_lstsize(list);
+    arr = (char **)malloc(sizeof(char *) * (len + 1));
+    if (!arr)
+    {
+        perror("list_to_array");
+        exit(1);
+    }
+    i = 0;
+    while (list != NULL)
+    {
+        arr[i++] = (char *)list->content;
+        list = list->next;
+    }
+    arr[i] = NULL;
+    return (arr);
+}

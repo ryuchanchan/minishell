@@ -4,6 +4,7 @@
 # include <stdbool.h>
 # include "../libft/include/libft.h"
 # include "set_signal.h"
+# include "lexer.h"
 
 # define PREFIX_SHELL "minishell> "
 

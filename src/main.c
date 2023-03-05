@@ -1,4 +1,5 @@
 #include "minishell.h"
+#include "lexer.h"
 
 /* begin: for debug  */
 __attribute__((destructor))
@@ -18,7 +19,19 @@ void	destructor(void)
 
 static void	minishell(char *line)
 {
-	ft_printf("%s\n", line);
+	// char	*input;
+	t_list	*list;
+	t_list	*head;
+
+	// ft_printf("%s\n", line);
+	list = tokenizer(line);
+	head = list;
+	while (list != NULL)
+	{
+		printf("%s\n", (char*)list->content);
+		list = list->next;
+	}
+	
 }
 
 static void update_line(char **line_p)

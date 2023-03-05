@@ -33,6 +33,10 @@ typedef struct s_redirection {
 
 } t_redirection;
 
+typedef struct s_pid {
+    int pids;
+} t_pid;
+
 char	*ft_strndup(char const *s1, size_t n);
 t_list	*tokenizer(char *input);
 t_node	*parser(t_list *tokens);

@@ -22,12 +22,15 @@ static void	minishell(char *line)
 	t_list	*head;
 	t_node	*node;
 	t_list	*command;
+	t_pid	pid;
     int		fdin;
     int		fdout;
 	int		pipe_fd[2];
 	int tmpin = dup(0);
     int tmpout = dup(1);
 	char **arr;
+	extern char	**environ;
+	int status;
 
 	// ft_printf("%s\n", line);
 	list = tokenizer(line);
@@ -56,9 +59,21 @@ static void	minishell(char *line)
 		dup2(fdout, 1);
 		close(fdout);
 		arr = list_to_array(command);
+		pid.pids = fork();
+		if (pid.pids == 0)
+		{
+			execve(arr[0], arr, environ);
+			perror(arr[0]);
+			exit(1);
+		}
+		free(arr);
+		node = node->next;
 	}
-	
-	
+	dup2(tmpin,0);
+	dup2(tmpout,1);
+	close(tmpin);
+	close(tmpout);
+	waitpid(pid.pids, &status, 0);
 }
 
 static void update_line(char **line_p)

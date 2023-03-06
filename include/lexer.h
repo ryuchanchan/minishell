@@ -40,8 +40,10 @@ typedef struct s_pid {
 char	*ft_strndup(char const *s1, size_t n);
 t_list	*tokenizer(char *input);
 t_node	*parser(t_list *tokens);
-void    print_filenames(t_list *filenames, int *fdout);
 char    **list_to_array(t_list *list);
-void redirect_input(t_list *filenames, int *fdin);
+void    redirect_output(t_list *filenames, int *fdout);
+void    redirect_input(t_list *filenames, int *fdin);
+int     do_heredoc(char *str);
+
 
 #endif

@@ -35,11 +35,11 @@ static void	minishell(char *line)
 	// ft_printf("%s\n", line);
 	list = tokenizer(line);
 	head = list;
-	while (list != NULL)
-	{
-		// printf("%s\n", (char*)list->content);
-		list = list->next;
-	}
+	// while (list != NULL)
+	// {
+	// 	// printf("%s\n", (char*)list->content);
+	// 	list = list->next;
+	// }
 	node = parser(head);
 	fdin = dup(tmpin);
 	while (node != NULL)
@@ -55,7 +55,8 @@ static void	minishell(char *line)
 		}
 		else
 			fdout = dup(tmpout);
-		print_filenames(node->filenames, &fdout);
+		redirect_output(node->filenames, &fdout);
+		// print_filenames(node->filenames, &fdout);
 		dup2(fdout, 1);
 		close(fdout);
 		arr = list_to_array(command);

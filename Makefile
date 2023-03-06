@@ -11,7 +11,8 @@ SRCS		=	$(DIR_SRC)/main.c				\
 				$(DIR_SRC)/signal/set_signal.c	\
 				$(DIR_SRC)/lexer/token.c		\
 				$(DIR_SRC)/lexer/parser.c		\
-				$(DIR_SRC)/lexer/print_filenames.c
+				$(DIR_SRC)/lexer/redirect.c \
+				$(DIR_SRC)/lexer/heredoc.c
 OBJS		=	$(SRCS:.c=.o)
 
 all : $(NAME)

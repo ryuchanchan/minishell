@@ -42,4 +42,6 @@ t_list	*tokenizer(char *input);
 t_node	*parser(t_list *tokens);
 void    print_filenames(t_list *filenames, int *fdout);
 char    **list_to_array(t_list *list);
+void redirect_input(t_list *filenames, int *fdin);
+
 #endif

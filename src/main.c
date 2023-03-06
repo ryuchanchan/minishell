@@ -37,7 +37,7 @@ static void	minishell(char *line)
 	head = list;
 	while (list != NULL)
 	{
-		printf("%s\n", (char*)list->content);
+		// printf("%s\n", (char*)list->content);
 		list = list->next;
 	}
 	node = parser(head);

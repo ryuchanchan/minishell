@@ -45,6 +45,7 @@ static void	minishell(char *line)
 	while (node != NULL)
 	{
 		command = node->commands;
+		redirect_input(node->filenames, &fdin);
 		dup2(fdin, 0);
 		close(fdin);
 		if (node->next != NULL)

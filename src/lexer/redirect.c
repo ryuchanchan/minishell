@@ -11,19 +11,7 @@ void redirect_input(t_list *filenames, int *fdin)
         if (redirection->type == INPUT)
             fd = open((char *)redirection->filename, O_RDONLY);
         else if (redirection->type == HEREDOC_INPUT)
-        {
             fd = do_heredoc(redirection->filename);
-            // int fd = open((char *)redirection->filename, O_RDONLY);
-            // close(*fdout);
-            // *fdout = fd;
-            // pipe(&fd_pipe[2]);
-            // while (*fdout)
-            // {
-            //     if (fd_pipe[1])
-            //     {
-            //         write(fd_pipe[1], fdout, 1);
-            //     }
-        }
         else
         {
             filenames = filenames->next;
@@ -38,7 +26,6 @@ void redirect_input(t_list *filenames, int *fdin)
         }
         filenames = filenames->next;
     }
-    
 }
 
 void redirect_output(t_list *filenames, int *fdout)

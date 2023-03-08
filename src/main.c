@@ -18,7 +18,12 @@ void	destructor(void)
 
 static void	minishell(char *line)
 {
-	ft_printf("%s\n", line);
+	char *expansioned;
+
+	ft_printf("input:		%s\n", line);
+	expansioned = expansion(line);
+	ft_printf("expansioned:	%s\n", expansioned);
+	free(expansioned);
 }
 
 static void update_line(char **line_p)

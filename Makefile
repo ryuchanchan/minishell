@@ -7,8 +7,12 @@ LFLAGS		=	-L$(DIR_RL)/lib -lreadline
 LIBFT		=	./libft/libft.a
 
 DIR_SRC		=	./src
-SRCS		=	$(DIR_SRC)/main.c			\
-				$(DIR_SRC)/signal/set_signal.c
+SRCS		=	$(DIR_SRC)/main.c				\
+				$(DIR_SRC)/utils/quotes.c	\
+				$(DIR_SRC)/signal/set_signal.c	\
+				$(DIR_SRC)/expansion/expansion.c	\
+				$(DIR_SRC)/expansion/replace_var.c
+
 OBJS		=	$(SRCS:.c=.o)
 
 all : $(NAME)

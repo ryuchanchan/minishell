@@ -20,26 +20,31 @@ static void	minishell(char *line)
 {
 	t_list	*list;
 	t_list	*head;
-	t_node	*node;
-	t_list	*command;
-	t_pid	pid;
-    int		fdin;
-    int		fdout;
-	int		pipe_fd[2];
-	int tmpin = dup(0);
-    int tmpout = dup(1);
-	char **arr;
-	extern char	**environ;
-	int status;
+	// t_node	*node;
+	// t_list	*command;
+	// t_pid	pid;
+    // int		fdin;
+    // int		fdout;
+	// int		pipe_fd[2];
+	// int tmpin = dup(0);
+    // int tmpout = dup(1);
+	// char **arr;
+	// extern char	**environ;
+	// int status;
 
 	// ft_printf("%s\n", line);
-	list = tokenizer(line);
+	list = lexier(line);
 	head = list;
-	// while (list != NULL)
-	// {
-	// 	// printf("%s\n", (char*)list->content);
-	// 	list = list->next;
-	// }
+	while (list != NULL)
+	{
+		printf("==========\n");
+		printf("str: %s\n", ((t_token *)list->content)->str);
+		printf("type: %d\n", ((t_token *)list->content)->type);
+		printf("==========\n");
+		list = list->next;
+	}
+	ft_lstclear(&head, destruct_token);
+	/*
 	node = parser(head);
 	fdin = dup(tmpin);
 	while (node != NULL)
@@ -76,6 +81,7 @@ static void	minishell(char *line)
 	close(tmpin);
 	close(tmpout);
 	waitpid(pid.pids, &status, 0);
+	*/
 }
 
 static void update_line(char **line_p)

@@ -1,69 +1,41 @@
-#include "lexer.h"
+# include "token.h"
 
-static void	extract(char *s, char *start, t_list **list)
+static t_token_type	get_token_type(const char *str)
 {
-    char *c;
-    size_t n;
-
-    if (s == start)
-    {
-        return ;
-    }
-    
-    n = (s - start) / sizeof(char);
-    c = ft_strndup(start, n);
-    // printf("%s\n", c);
-    ft_lstadd_back(list, ft_lstnew(c));
+	if (ft_strcmp(str, "|") == 0)
+		return (T_PIPE);
+	if (ft_strcmp(str, "<<") == 0)
+		return (T_REDIRECT_HEREDOC);
+	if (ft_strcmp(str, "<") == 0)
+		return (T_REDIRECT_IN);
+	if (ft_strcmp(str, ">>") == 0)
+		return (T_REDIRECT_OUT_APPEND);
+	if (ft_strcmp(str, ">") == 0)
+		return (T_REDIRECT_OUT_TRUNC);
+	return (T_WORD);
 }
 
-static int	istoken(char c)
+t_token	*construct_token(char *str)
 {
-    return ((c == ' ' || c == '|' || c == '<' || c == '>'));
+	t_token *token_p;
+
+	if (!str)
+		return (NULL);
+	token_p = malloc(sizeof(t_token));
+	if (!token_p)
+		return (NULL);
+	token_p->str = str;
+	token_p->type = get_token_type(token_p->str);
+	return (token_p);
 }
 
-//文字列を分割する
-t_list *tokenizer(char *input)
+void	destruct_token(void *content)
 {
-    int     i;
-    char *start;
-    int     indquote;
-    int     insquote;
-    t_list  *list;
-
-    list = NULL;
-    
-    indquote = 0;
-    insquote = 0;
-    start = input;
-    i = 0;
-    while (input[i] != '\0')
-    {
-        if (input[i] == '"' && !insquote)
-        {
-            indquote = !indquote;
-        }
-        if (input[i] == '\'' && !indquote)
-        {
-            insquote = !insquote;
-        }
-        if (istoken(input[i]) && !indquote && !insquote)
-        {
-            extract(&input[i], start, &list);
-            start = &input[i+1];
-            if (input[i] != ' ')
-            {
-                if (input[i] != '|' && input[i] == input[i+1])
-                {
-                    extract(&input[i+2], &input[i], &list);
-                    start = &input[i+2];
-                    i++;   
-                }
-                else
-                    extract(&input[i+1], &input[i], &list);       
-            }    
-        }
-        i++;
-    }
-    extract(&input[i], start, &list);
-    return (list);
+	t_token *token_p;
+	token_p = content;
+	if (!token_p)
+		return ;
+	if (token_p->str)
+		free(token_p->str);
+	free(token_p);
 }

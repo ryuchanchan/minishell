@@ -5,6 +5,14 @@
 # include <stdio.h>
 # include <fcntl.h> 
 
+# include "quotes.h"
+# include "token.h"
+
+typedef struct s_lexier {
+    char            *start;
+    t_status_quotes status;
+} t_lexier;
+
 typedef enum e_label {
     COMMAND,
     PIPE,
@@ -38,7 +46,7 @@ typedef struct s_pid {
 } t_pid;
 
 char	*ft_strndup(char const *s1, size_t n);
-t_list	*tokenizer(char *input);
+t_list	*lexier(char *input);
 t_node	*parser(t_list *tokens);
 char    **list_to_array(t_list *list);
 void    redirect_output(t_list *filenames, int *fdout);

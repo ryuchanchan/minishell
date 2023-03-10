@@ -17,7 +17,7 @@ static void extract(char *line, size_t *i_p, char **start_p, t_list **tokens_p)
 {
     add_token(&line[*i_p], *start_p, tokens_p);
     *start_p = &line[*i_p + 1];
-    if (line[*i_p] == ' ')
+    if (line[*i_p] == ' ' || line[*i_p] == '\t')
     {
         (*i_p)++;
         return ;
@@ -36,7 +36,9 @@ static void extract(char *line, size_t *i_p, char **start_p, t_list **tokens_p)
 
 static int	is_separator(char c)
 {
-    return ((c == ' ' || c == '|' || c == '<' || c == '>'));
+    if (c == ' ' || c == '\t')
+        return (true);
+    return (c == '|' || c == '<' || c == '>');
 }
 
 static void initialize_lexier(t_lexier *lexier_p, char *line)

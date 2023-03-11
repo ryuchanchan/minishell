@@ -9,12 +9,12 @@ LIBFT		=	./libft/libft.a
 DIR_SRC		=	./src
 SRCS		=	$(DIR_SRC)/main.c				\
 				$(DIR_SRC)/signal/set_signal.c	\
-				$(DIR_SRC)/utils/quotes.c	\
+				$(DIR_SRC)/utils/quotes.c		\
 				$(DIR_SRC)/lexer/token.c		\
 				$(DIR_SRC)/lexer/lexer.c		\
 				$(DIR_SRC)/parser/parser.c		\
-				$(DIR_SRC)/lexer/redirect.c \
-				$(DIR_SRC)/lexer/heredoc.c
+				$(DIR_SRC)/executor/redirect.c \
+				$(DIR_SRC)/executor/heredoc.c
 OBJS		=	$(SRCS:.c=.o)
 
 all : $(NAME)

@@ -114,7 +114,7 @@ static void	minishell(char *line)
 	//  int status;
 
 	// ft_printf("%s\n", line);
-	tokens = lexier(line);
+	tokens = lexer(line);
 	print_tokens(tokens);
 	/*
 	 *Todo: tokens validation check & expansion
@@ -131,7 +131,7 @@ static void	minishell(char *line)
 	/* parser */
 	commands = parser(tokens);
 	print_commands(commands);
-	
+
 	ft_lstclear(&tokens, destruct_token);
 	ft_lstclear(&commands, destruct_command);
 

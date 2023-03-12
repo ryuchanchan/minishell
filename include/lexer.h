@@ -7,11 +7,11 @@
 # include "quotes.h"
 # include "token.h"
 
-typedef struct s_lexier {
+typedef struct s_lexer {
     char            *start;
     t_status_quotes status;
-} t_lexier;
+} t_lexer;
 
-t_list  *lexier(char *input);
+t_list  *lexer(char *input);
 
 #endif

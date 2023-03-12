@@ -46,36 +46,36 @@ static int  is_separator(char c)
     return (c == '|' || c == '<' || c == '>');
 }
 
-static void initialize_lexier(t_lexier *lexier_p, char *line)
+static void initialize_lexer(t_lexer *lexer_p, char *line)
 {
-    lexier_p->start = line;
-    lexier_p->status = NONE;
+    lexer_p->start = line;
+    lexer_p->status = NONE;
 }
 
-t_list  *lexier(char *line)
+t_list  *lexer(char *line)
 {
     size_t      i;
-    t_lexier    lexier;
+    t_lexer    lexer;
     t_list      *tokens;
 
-    initialize_lexier(&lexier, line);
+    initialize_lexer(&lexer, line);
     tokens = NULL;
     i = 0;
     while (line[i] != '\0')
     {
-        if (is_single_quote_begin(lexier.status, line, i))
-            update_status(&lexier.status, IN_SINGLE_QUOTE, &i);
-        else if (is_double_quote_begin(lexier.status, line, i))
-            update_status(&lexier.status, IN_DOUBLE_QUOTE, &i);
-        else if (is_quote_end(lexier.status, line, i))
-			update_status(&lexier.status, NONE, &i);
-        else if (is_separator(line[i]) && lexier.status == NONE)
-            extract(line, &i, &lexier.start, &tokens);
+        if (is_single_quote_begin(lexer.status, line, i))
+            update_status(&lexer.status, IN_SINGLE_QUOTE, &i);
+        else if (is_double_quote_begin(lexer.status, line, i))
+            update_status(&lexer.status, IN_DOUBLE_QUOTE, &i);
+        else if (is_quote_end(lexer.status, line, i))
+			update_status(&lexer.status, NONE, &i);
+        else if (is_separator(line[i]) && lexer.status == NONE)
+            extract(line, &i, &lexer.start, &tokens);
         else
             i++;
     }
-    add_token(&line[i], lexier.start, &tokens);
-    if (lexier.status != NONE)
+    add_token(&line[i], lexer.start, &tokens);
+    if (lexer.status != NONE)
         ft_printf("warning: unquote!!!!!\n");
     return (tokens);
 }

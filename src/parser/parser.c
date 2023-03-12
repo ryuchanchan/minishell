@@ -1,111 +1,82 @@
-#include "lexer.h"
+#include "parser.h"
 
-//変数inputの文字を一つ一つ構造体の変数contentsに入れる。
-
-static t_node *make_node()
+static void add_command(t_list **commands, t_list **command_p)
 {
-    t_node *data;
+    t_command   *c_p;
 
-    data = malloc(sizeof(t_node));
-    if (!data)
-    {
+    ft_lstadd_back(commands, *command_p);
+    c_p = construct_command();
+    if (!c_p)
         exit(1);
-    }
-    data->commands = NULL;
-    data->filenames = NULL;
-    data->next = NULL;
-    data->label = COMMAND;
-    return (data);
-}
-
-static int	is_redirection(const char *s)
-{
-	size_t len;
-	if (!s)
-		return (0);
-	len = ft_strlen(s);
-	if (len == 2)
-	{
-		if (ft_strncmp(s, "<<", 2) == 0)
-			return (1);
-		if (ft_strncmp(s, ">>", 2) == 0)
-			return (1);
-	}
-	if (len == 1)
-	{
-		if (ft_strncmp(s, ">", 1) == 0)
-			return (1);
-		if (ft_strncmp(s, "<", 1) == 0)
-			return (1);
-	}
-    return (0);
-}
-
-static t_redirection *make_redirection(t_list *now, t_list **next_p)
-{
-    t_redirection *data;
-
-    data = malloc(sizeof(t_redirection));
-    if (!data)
-    {
+    *command_p = ft_lstnew(c_p);
+    if (!*command_p)
         exit(1);
-    }
-    if (ft_strncmp(now->content, "<<", 2) == 0)
-    {
-        data->type = HEREDOC_INPUT;
-    }
-    else if (ft_strncmp(now->content, ">>", 2) == 0)
-    {
-        data->type = APPEND_OUTPUT;
-    }
-    else if (ft_strncmp(now->content, ">", 1) == 0)
-    {
-        data->type = OUTPUT;
-    }
-    else if (ft_strncmp(now->content, "<", 1) == 0)
-    {
-        data->type = INPUT;
-    }
-    if (*next_p != NULL && !is_redirection((*next_p)->content))
-    {  
-        // (*next_p)->contentがリダイレクションの場合syntax errになるべき
-        data->filename = (*next_p)->content;
-		*next_p = (*next_p)->next;
-	}
-	return (data);
 }
 
-t_node *parser(t_list *tokens)
+static void add_redirection(t_list **token_p, t_list *command)
 {
-    t_list *next;
-    t_list *now;
-    t_node *node;
-    t_node *head;
+    t_command       *c_p;
+    t_token         *t_p;
+    t_token         *next_p;
+    t_redirection   *redirection;
+    t_list          *list;
 
-    now = tokens;
-    //whileに入る前にノードを作る必要がある
-    //リストに入ってる文字列comands filenames null
-    head = make_node();
-    node = head;
-    while (now != NULL)
+    c_p = command->content;
+    t_p = (*token_p)->content;
+    *token_p = (*token_p)->next;
+    if (!*token_p)
+        exit(1);
+    next_p = (*token_p)->content;
+    if (!t_p || !next_p)
+        exit(1);
+    redirection = construct_redirection(t_p, next_p);
+    if (!redirection)
+        exit(1);
+    list = ft_lstnew(redirection);
+    if (!list)
+        exit(1);
+    ft_lstadd_back(&(c_p->redirections), list);
+}
+
+static void add_arg(t_token *t_p, t_list *command)
+{
+    t_command   *c_p;
+    char        *arg;
+    t_list      *list;
+
+    c_p = command->content;
+    arg = ft_strdup(t_p->str);
+    if (!arg)
+        exit(1);
+    list = ft_lstnew(arg);
+    if (!list)
+        exit(1);
+    ft_lstadd_back(&(c_p->args), list);
+}
+
+t_list  *parser(t_list *tokens)
+{
+    t_list      *commands;
+    t_list      *cmd;
+    t_list      *tkn;
+    t_token     *t_p;
+
+    commands = NULL;
+    cmd = NULL;
+    add_command(&commands, &cmd);
+    tkn = tokens;
+    while (tkn)
     {
-        next = now->next;
-        now->next = NULL;
-        //nowがパイプラインだったとき新しくノードを作って元に戻る必要ある
-        if (ft_strncmp((const char *)now->content, "|", 1) == 0)
-        {
-            node->next = make_node();
-            node = node->next;
-        }        
-        else if (is_redirection((const char *)now->content))
-        {
-            ft_lstadd_back(&node->filenames, ft_lstnew(make_redirection(now, &next)));
-        }
-        else
-        {
-            ft_lstadd_back(&node->commands, now);
-        }
-        now = next;
+        t_p = tkn->content;
+        if (t_p->type == T_PIPE)
+            add_command(&commands, &cmd);
+        if (is_redirection(t_p->type))
+            add_redirection(&tkn, cmd);
+        if (t_p->type == T_WORD)
+            add_arg(t_p, cmd);
+        tkn = tkn->next;
     }
-    return (head);
+    add_command(&commands, &cmd);
+    ft_lstclear(&cmd, destruct_command);
+    return (commands);
 }

@@ -17,7 +17,7 @@ static t_token_type	get_token_type(const char *str)
 
 t_token	*construct_token(char *str)
 {
-	t_token *token_p;
+	t_token	*token_p;
 
 	if (!str)
 		return (NULL);
@@ -31,10 +31,11 @@ t_token	*construct_token(char *str)
 
 void	destruct_token(void *content)
 {
-	t_token *token_p;
-	token_p = content;
-	if (!token_p)
+	t_token	*token_p;
+
+	if (!content)
 		return ;
+	token_p = content;
 	if (token_p->str)
 		free(token_p->str);
 	free(token_p);

@@ -1,6 +1,8 @@
 #ifndef TOKEN_H
 # define TOKEN_H
 
+# include <stdbool.h>
+
 # include "../libft/include/libft.h"
 
 typedef enum e_token_type {
@@ -13,11 +15,12 @@ typedef enum e_token_type {
 } t_token_type;
 
 typedef struct s_token {
-	char		*str;
+	char			*str;
 	t_token_type	type;
 } t_token;
 
 t_token	*construct_token(char *str);
 void	destruct_token(void *content);
+bool	is_redirection(t_token_type type);
 
 #endif

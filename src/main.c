@@ -14,36 +14,128 @@ void	destructor(void)
 		exit(1);
 	}
 }
+
+static void print_tokens(t_list *t)
+{
+	t_token	*t_p;
+	t_list	*tokens;
+
+	tokens = t;
+	printf("===== print_tokens: begin =====\n");
+	while (tokens != NULL)
+	{
+		t_p = tokens->content;
+		printf("==========\n");
+		printf("str: %s\n", t_p->str);
+		printf("type: %d\n", t_p->type);
+		printf("==========\n");
+		tokens = tokens->next;
+	}
+	printf("===== print_tokens: end =====\n");
+}
+
+static void print_args(t_list *a)
+{
+	char	*a_p;
+	size_t	i;
+	t_list	*args;
+
+	args = a;
+	printf("	===== print_args: begin =====\n");
+	i = 0;
+	while (args != NULL)
+	{
+		a_p = args->content;
+		printf("	==========\n");
+		printf("	arg[%zu]:	%s\n", i++, a_p);
+		printf("	==========\n");
+		args = args->next;
+	}
+	printf("	===== print_args: end =====\n");
+}
+
+static void print_redirections(t_list *r)
+{
+	t_redirection	*r_p;
+	t_list	*redirections;
+
+	redirections = r;
+	printf("	===== print_redirections: begin =====\n");
+	while (redirections != NULL)
+	{
+		r_p = redirections->content;
+		printf("	==========\n");
+		printf("	type:		%d\n", r_p->type);
+		printf("	filename:	%s\n", r_p->filename);
+		printf("	==========\n");
+		redirections = redirections->next;
+	}
+	printf("	===== print_redirections: end =====\n");
+}
+
+static void print_commands(t_list *c)
+{
+	t_command	*c_p;
+	t_list *commands;
+
+	commands = c;
+	printf("===== print_commadns: begin =====\n");
+	while (commands != NULL)
+	{
+		c_p = commands->content;
+		printf("==========\n");
+		printf("pid:	%d\n", c_p->pid);
+		printf("status:	%d\n", c_p->status);
+		printf("type:	%d\n", c_p->type);
+		print_args(c_p->args);
+		print_redirections(c_p->redirections);
+		printf("==========\n");
+		commands = commands->next;
+	}
+	printf("===== print_commands: end =====\n");
+}
 /* end: for debug */
 
 static void	minishell(char *line)
 {
-	t_list	*list;
-	t_list	*head;
-	// t_node	*node;
-	// t_list	*command;
-	// t_pid	pid;
-    // int		fdin;
-    // int		fdout;
-	// int		pipe_fd[2];
-	// int tmpin = dup(0);
-    // int tmpout = dup(1);
-	// char **arr;
-	// extern char	**environ;
-	// int status;
+	t_list	*tokens;
+	t_list	*commands;
+	// t_list	*head;
+	//  t_node	*node;
+	//  t_list	*command;
+	//  t_pid	pid;
+	//  int		fdin;
+	//  int		fdout;
+	//  int		pipe_fd[2];
+	//  int tmpin = dup(0);
+	//  int tmpout = dup(1);
+	//  char **arr;
+	//  extern char	**environ;
+	//  int status;
 
 	// ft_printf("%s\n", line);
-	list = lexier(line);
-	head = list;
-	while (list != NULL)
-	{
-		printf("==========\n");
-		printf("str: %s\n", ((t_token *)list->content)->str);
-		printf("type: %d\n", ((t_token *)list->content)->type);
-		printf("==========\n");
-		list = list->next;
-	}
-	ft_lstclear(&head, destruct_token);
+	tokens = lexier(line);
+	print_tokens(tokens);
+	/*
+	 *Todo: tokens validation check & expansion
+	 *The following are check items.
+	 *	1. The first token must not be a PIPE.
+	 *	2. PIPE must not be consecutive.
+	 *	3. REDIRECTION must be followed by WORD.
+	 *	4. The last token must not be PIPE, REDIRECTION.
+	 *
+	 *If the check items are not satisfied, an error message is output and free token and return.
+	 *Example message
+	 *	minishell: syntax error near unexpected token '>'
+	 */
+	/* parser */
+	commands = parser(tokens);
+	print_commands(commands);
+	
+	ft_lstclear(&tokens, destruct_token);
+	ft_lstclear(&commands, destruct_command);
+
+	/* executor */
 	/*
 	node = parser(head);
 	fdin = dup(tmpin);

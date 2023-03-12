@@ -1,16 +1,21 @@
 #include "lexer.h"
 
-static void	add_token(char *s, char *start, t_list **list)
+static void add_token(char *s, char *start, t_list **list_p)
 {
     t_token *token_p;
+    t_list  *list;
     size_t  n;
+
     if (s == start)
         return ;
     n = (s - start) / sizeof(char);
     token_p = construct_token(ft_strndup(start, n));
     if (!token_p)
         exit(1);
-    ft_lstadd_back(list, ft_lstnew(token_p));
+    list = ft_lstnew(token_p);
+    if (!list)
+        exit(1);
+    ft_lstadd_back(list_p, list);
 }
 
 static void extract(char *line, size_t *i_p, char **start_p, t_list **tokens_p)
@@ -34,7 +39,7 @@ static void extract(char *line, size_t *i_p, char **start_p, t_list **tokens_p)
     (*i_p)++;
 }
 
-static int	is_separator(char c)
+static int  is_separator(char c)
 {
     if (c == ' ' || c == '\t')
         return (true);
@@ -47,7 +52,7 @@ static void initialize_lexier(t_lexier *lexier_p, char *line)
     lexier_p->status = NONE;
 }
 
-t_list *lexier(char *line)
+t_list  *lexier(char *line)
 {
     size_t      i;
     t_lexier    lexier;

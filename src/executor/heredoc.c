@@ -1,12 +1,14 @@
-#include"lexer.h"
+#include"executor.h"
 #include <readline/readline.h>
 #include <readline/history.h>
 
-int	do_heredoc(char *str)
+int	do_heredoc(char *str, int tmpin, int tmpout)
 {
 	int	fd_pipe[2];
 	char *line;
 
+	dup2(tmpin, 0);
+	dup2(tmpout, 1);
 	if (pipe(fd_pipe) < 0)
 		return(-1);
 	line = readline("heredoc> ");

@@ -15,8 +15,9 @@ SRCS		=	$(DIR_SRC)/main.c				\
 				$(DIR_SRC)/parser/redirection.c	\
 				$(DIR_SRC)/parser/command.c		\
 				$(DIR_SRC)/parser/parser.c		\
-			#	$(DIR_SRC)/executor/redirect.c \
-				$(DIR_SRC)/executor/heredoc.c
+				$(DIR_SRC)/executor/redirect.c	\
+				$(DIR_SRC)/executor/heredoc.c	\
+				$(DIR_SRC)/executor/executor.c
 OBJS		=	$(SRCS:.c=.o)
 
 all : $(NAME)

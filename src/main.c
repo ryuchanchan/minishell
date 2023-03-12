@@ -96,7 +96,7 @@ static void print_commands(t_list *c)
 }
 /* end: for debug */
 
-static void	minishell(char *line)
+static void	minishell(char *line, char **envp)
 {
 	t_list	*tokens;
 	t_list	*commands;
@@ -131,49 +131,9 @@ static void	minishell(char *line)
 	/* parser */
 	commands = parser(tokens);
 	print_commands(commands);
-
 	ft_lstclear(&tokens, destruct_token);
+	executor(commands, &envp);
 	ft_lstclear(&commands, destruct_command);
-
-	/* executor */
-	/*
-	node = parser(head);
-	fdin = dup(tmpin);
-	while (node != NULL)
-	{
-		command = node->commands;
-		redirect_input(node->filenames, &fdin);
-		dup2(fdin, 0);
-		close(fdin);
-		if (node->next != NULL)
-		{
-			pipe(pipe_fd);
-			fdout = pipe_fd[1];
-			fdin = pipe_fd[0];
-		}
-		else
-			fdout = dup(tmpout);
-		redirect_output(node->filenames, &fdout);
-		// print_filenames(node->filenames, &fdout);
-		dup2(fdout, 1);
-		close(fdout);
-		arr = list_to_array(command);
-		pid.pids = fork();
-		if (pid.pids == 0)
-		{
-			execve(arr[0], arr, environ);
-			perror(arr[0]);
-			exit(1);
-		}
-		free(arr);
-		node = node->next;
-	}
-	dup2(tmpin,0);
-	dup2(tmpout,1);
-	close(tmpin);
-	close(tmpout);
-	waitpid(pid.pids, &status, 0);
-	*/
 }
 
 static void update_line(char **line_p)
@@ -198,7 +158,7 @@ int	main(int argc, char **argv, char **envp)
 			update_line(&line);
 			continue;
 		}
-		minishell(line);
+		minishell(line, envp);
 		add_history(line);
 		update_line(&line);
 	}

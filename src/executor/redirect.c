@@ -1,59 +1,62 @@
-#include "lexer.h"
+#include "executor.h"
 
-void redirect_input(t_list *filenames, int *fdin)
+void    redirect_input(t_list *redirections, int *fdin, int tmpin, int tmpout)
 {
     int             fd;
-    t_redirection   *redirection;
+    t_list          *redirection;
+    t_redirection   *r_p;
 
-    while (filenames != NULL)
+    redirection = redirections;
+    while (redirection)
     {
-        redirection = (t_redirection *)filenames->content;
-        if (redirection->type == INPUT)
-            fd = open((char *)redirection->filename, O_RDONLY);
-        else if (redirection->type == HEREDOC_INPUT)
-            fd = do_heredoc(redirection->filename);
+        r_p = (t_redirection *)redirection->content;
+        if (r_p->type == T_REDIRECT_IN)
+            fd = open(r_p->filename, O_RDONLY);
+        else if (r_p->type == T_REDIRECT_HEREDOC)
+            fd = do_heredoc(r_p->filename, tmpin, tmpout);
         else
         {
-            filenames = filenames->next;
+            redirection = redirection->next;
             continue ;
         }
         if (fd < 0)
-            perror("minishell");
+            perror(r_p->filename);
         else
         {
             close(*fdin);
             *fdin = fd;
         }
-        filenames = filenames->next;
+        redirection = redirection->next;
     }
 }
 
-void redirect_output(t_list *filenames, int *fdout)
+void    redirect_output(t_list *redirections, int *fdout)
 {
-    // int             fd_pipe[2];
     int             fd;
-    t_redirection   *redirection;
+    t_list          *redirection;
+    t_redirection   *r_p;
 
-    while (filenames != NULL)
+    redirection = redirections;
+    while (redirection)
     {
-        redirection = (t_redirection *)filenames->content;
-        if (redirection->type == OUTPUT)
-            fd = open((char *)redirection->filename, O_RDWR|O_CREAT|O_TRUNC, 0777);
-        else if (redirection->type == APPEND_OUTPUT)
-            fd = open((char *)redirection->filename, O_RDWR|O_APPEND|O_CREAT, 0777);
+        r_p = (t_redirection *)redirection->content;
+        if (r_p->type == T_REDIRECT_OUT_TRUNC)
+            fd = open(r_p->filename, O_RDWR|O_CREAT|O_TRUNC, 0644);
+        else if (r_p->type == T_REDIRECT_OUT_APPEND)
+            fd = open(r_p->filename, O_RDWR|O_CREAT|O_APPEND, 0644);
         else
         {
-            filenames = filenames->next;
+            redirection = redirection->next;
             continue ;
         }
         if (fd < 0)
-            perror("minishell");
+            perror(r_p->filename);
         else
         {
             close(*fdout);
             *fdout = fd;
         }
-        filenames = filenames->next;
+        redirection = redirection->next;
     }
 }
 

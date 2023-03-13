@@ -10,14 +10,14 @@ void	executor(t_list *commands, char ***envp_p)
 	int tmpout;
 	char **arr;
 
-	tmpin = dup(0);
-	tmpout = dup(1);
+	tmpin = dup(STDIN_FILENO);
+	tmpout = dup(STDOUT_FILENO);
 	fdin = dup(tmpin);
 	command = commands;
 	while (command)
 	{
 		redirect_input(((t_command *)command->content)->redirections, &fdin, tmpin, tmpout);
-		dup2(fdin, 0);
+		dup2(fdin, STDIN_FILENO);
 		close(fdin);
 		if (command->next)
 		{
@@ -28,7 +28,7 @@ void	executor(t_list *commands, char ***envp_p)
 		else
 			fdout = dup(tmpout);
 		redirect_output(((t_command *)command->content)->redirections, &fdout);
-		dup2(fdout, 1);
+		dup2(fdout, STDOUT_FILENO);
 		close(fdout);
 		arr = list_to_array(((t_command *)command->content)->args);
 		((t_command *)command->content)->pid = fork();
@@ -41,8 +41,8 @@ void	executor(t_list *commands, char ***envp_p)
 		free(arr);
 		command = command->next;
 	}
-	dup2(tmpin,0);
-	dup2(tmpout,1);
+	dup2(tmpin, STDIN_FILENO);
+	dup2(tmpout, STDOUT_FILENO);
 	close(tmpin);
 	close(tmpout);
 	command = commands;

@@ -100,35 +100,14 @@ static void	minishell(char *line, char **envp)
 {
 	t_list	*tokens;
 	t_list	*commands;
-	// t_list	*head;
-	//  t_node	*node;
-	//  t_list	*command;
-	//  t_pid	pid;
-	//  int		fdin;
-	//  int		fdout;
-	//  int		pipe_fd[2];
-	//  int tmpin = dup(0);
-	//  int tmpout = dup(1);
-	//  char **arr;
-	//  extern char	**environ;
-	//  int status;
 
-	// ft_printf("%s\n", line);
 	tokens = lexer(line);
 	print_tokens(tokens);
-	/*
-	 *Todo: tokens validation check & expansion
-	 *The following are check items.
-	 *	1. The first token must not be a PIPE.
-	 *	2. PIPE must not be consecutive.
-	 *	3. REDIRECTION must be followed by WORD.
-	 *	4. The last token must not be PIPE, REDIRECTION.
-	 *
-	 *If the check items are not satisfied, an error message is output and free token and return.
-	 *Example message
-	 *	minishell: syntax error near unexpected token '>'
-	 */
-	/* parser */
+	if (validate_and_expand(tokens))
+	{
+		ft_lstclear(&tokens, destruct_token);
+		return ;
+	}
 	commands = parser(tokens);
 	print_commands(commands);
 	ft_lstclear(&tokens, destruct_token);
@@ -136,7 +115,7 @@ static void	minishell(char *line, char **envp)
 	ft_lstclear(&commands, destruct_command);
 }
 
-static void update_line(char **line_p)
+static void	update_line(char **line_p)
 {
 	free(*line_p);
 	*line_p = readline(PREFIX_SHELL);
@@ -144,11 +123,10 @@ static void update_line(char **line_p)
 
 int	main(int argc, char **argv, char **envp)
 {
-	char *line;
+	char	*line;
 
 	(void)argc;
 	(void)argv;
-	(void)envp;
 	set_signal();
 	line = readline(PREFIX_SHELL);
 	while (line)
@@ -156,7 +134,7 @@ int	main(int argc, char **argv, char **envp)
 		if (ft_strlen(line) <= 0)
 		{
 			update_line(&line);
-			continue;
+			continue ;
 		}
 		minishell(line, envp);
 		add_history(line);

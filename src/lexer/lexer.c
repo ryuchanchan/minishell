@@ -39,7 +39,7 @@ static void extract(char *line, size_t *i_p, char **start_p, t_list **tokens_p)
     (*i_p)++;
 }
 
-static int  is_separator(char c)
+static bool is_separator(char c)
 {
     if (c == ' ' || c == '\t')
         return (true);
@@ -54,9 +54,9 @@ static void initialize_lexer(t_lexer *lexer_p, char *line)
 
 t_list  *lexer(char *line)
 {
-    size_t      i;
-    t_lexer    lexer;
-    t_list      *tokens;
+    size_t  i;
+    t_lexer lexer;
+    t_list  *tokens;
 
     initialize_lexer(&lexer, line);
     tokens = NULL;

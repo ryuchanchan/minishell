@@ -67,7 +67,7 @@ char    **list_to_array(t_list *list)
     char    **arr;
 
     len = (size_t)ft_lstsize(list);
-    arr = (char **)malloc(sizeof(char *) * (len + 1));
+    arr = malloc(sizeof(char *) * (len + 1));
     if (!arr)
     {
         perror("list_to_array");

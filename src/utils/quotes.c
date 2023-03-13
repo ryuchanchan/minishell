@@ -17,7 +17,7 @@ bool	is_single_quote_begin(const t_status_quotes status, const char *src, size_t
 	return (status == NONE && src[i] == '\'');
 }
 
-void update_status(t_status_quotes *status, t_status_quotes next, size_t *i_p)
+void	update_status(t_status_quotes *status, t_status_quotes next, size_t *i_p)
 {
 	*status = next;
 	(*i_p)++;

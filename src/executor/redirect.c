@@ -1,6 +1,14 @@
 #include "executor.h"
 
-void    redirect_input(t_list *redirections, int *fdin, int tmpin, int tmpout)
+static void update_fd(int *fd_p, int fd_new, char *filename)
+{
+    if (fd_new < 0)
+        perror(filename);
+    close(*fd_p);
+    *fd_p = fd_new;
+}
+
+static void redirect_input(t_list *redirections, int *fdin, int tmpin, int tmpout)
 {
     int             fd;
     t_list          *redirection;
@@ -19,18 +27,14 @@ void    redirect_input(t_list *redirections, int *fdin, int tmpin, int tmpout)
             redirection = redirection->next;
             continue ;
         }
+        update_fd(fdin, fd, r_p->filename);
         if (fd < 0)
-            perror(r_p->filename);
-        else
-        {
-            close(*fdin);
-            *fdin = fd;
-        }
+            return ;
         redirection = redirection->next;
     }
 }
 
-void    redirect_output(t_list *redirections, int *fdout)
+static void redirect_output(t_list *redirections, int *fdout)
 {
     int             fd;
     t_list          *redirection;
@@ -49,36 +53,35 @@ void    redirect_output(t_list *redirections, int *fdout)
             redirection = redirection->next;
             continue ;
         }
+        update_fd(fdout, fd, r_p->filename);
         if (fd < 0)
-            perror(r_p->filename);
-        else
-        {
-            close(*fdout);
-            *fdout = fd;
-        }
+            return ;
         redirection = redirection->next;
     }
 }
 
-char    **list_to_array(t_list *list)
+bool do_redirect(t_list *command, int fdin, int tmpin, int tmpout)
 {
-    size_t  i;
-    size_t  len;
-    char    **arr;
+	int		fdout;
+	int		pipe_fd[2];
 
-    len = (size_t)ft_lstsize(list);
-    arr = malloc(sizeof(char *) * (len + 1));
-    if (!arr)
-    {
-        perror("list_to_array");
-        exit(1);
-    }
-    i = 0;
-    while (list != NULL)
-    {
-        arr[i++] = (char *)list->content;
-        list = list->next;
-    }
-    arr[i] = NULL;
-    return (arr);
+	redirect_input(((t_command *)command->content)->redirections, &fdin, tmpin, tmpout);
+	if (fdin < 0)
+		return (true);
+	dup2(fdin, STDIN_FILENO);
+	close(fdin);
+	if (command->next)
+	{
+		pipe(pipe_fd);
+		fdout = pipe_fd[1];
+		fdin = pipe_fd[0];
+	}
+	else
+		fdout = dup(tmpout);
+	redirect_output(((t_command *)command->content)->redirections, &fdout);
+	if (fdout < 0)
+		return (true) ;
+	dup2(fdout, STDOUT_FILENO);
+	close(fdout);
+	return (false);
 }

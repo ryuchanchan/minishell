@@ -8,6 +8,7 @@ LIBFT		=	./libft/libft.a
 
 DIR_SRC		=	./src
 SRCS		=	$(DIR_SRC)/main.c					\
+				$(DIR_SRC)/error/ms_error.c			\
 				$(DIR_SRC)/signal/set_signal.c		\
 				$(DIR_SRC)/utils/quotes.c			\
 				$(DIR_SRC)/lexer/token.c			\
@@ -27,7 +28,7 @@ OBJS		=	$(SRCS:.c=.o)
 all : $(NAME)
 
 $(NAME) : $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) $(LFLAGS) $^ -o $@
+	$(CC) $(CFLAGS) $^ -o $@ $(LFLAGS)
 
 $(LIBFT) :
 	make -C libft

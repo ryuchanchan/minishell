@@ -40,7 +40,7 @@ static void	join_strs(char *before, char *val, char *after, t_expansions *ex)
 
 	tmp = ft_strjoin(before, val);
 	if (!tmp)
-		exit(1);
+		fatal_error("expansion");
 	ex->j = ft_strlen(tmp);
 	free(ex->dest);
 	ex->dest = ft_strjoin(tmp, after);
@@ -60,15 +60,15 @@ void	replace_var(t_expansions *ex)
 	name = get_name(ex->src, &(ex->i));
 	after = ft_strdup(&ex->src[ex->i]);
 	if (!before || !name || !after)
-		exit(1);
+		fatal_error("expansion");
 	val = get_val(name);
 	if (!val)
-		exit(1);
+		fatal_error("expansion");
 	join_strs(before, val, after, ex);
 	free(before);
 	free(name);
 	free(val);
 	free(after);
 	if (!ex->dest)
-		exit(1);
+		fatal_error("expansion");
 }

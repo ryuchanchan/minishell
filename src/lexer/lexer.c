@@ -11,10 +11,10 @@ static void add_token(char *s, char *start, t_list **list_p)
     n = (s - start) / sizeof(char);
     token_p = construct_token(ft_strndup(start, n));
     if (!token_p)
-        exit(1);
+        fatal_error("lexer");
     list = ft_lstnew(token_p);
     if (!list)
-        exit(1);
+        fatal_error("lexer");
     ft_lstadd_back(list_p, list);
 }
 
@@ -52,7 +52,7 @@ static void initialize_lexer(t_lexer *lexer_p, char *line)
     lexer_p->status = NONE;
 }
 
-t_list  *lexer(char *line)
+t_list  *lexer(char *line, bool *is_quote_not_closed_p)
 {
     size_t  i;
     t_lexer lexer;
@@ -76,6 +76,6 @@ t_list  *lexer(char *line)
     }
     add_token(&line[i], lexer.start, &tokens);
     if (lexer.status != NONE)
-        ft_printf("warning: unquote!!!!!\n");
+        *is_quote_not_closed_p = true;
     return (tokens);
 }

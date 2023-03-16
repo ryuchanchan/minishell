@@ -3,6 +3,7 @@
 
 # include "quotes.h"
 # include "token.h"
+# include "ms_error.h"
 
 typedef struct	e_expansions
 {

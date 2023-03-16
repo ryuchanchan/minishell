@@ -1,6 +1,7 @@
 #include "minishell.h"
 
 /* begin: for debug  */
+/*
 __attribute__((destructor))
 void	destructor(void)
 {
@@ -14,7 +15,7 @@ void	destructor(void)
 		exit(1);
 	}
 }
-
+*/
 static void print_tokens(t_list *t)
 {
 	t_token	*t_p;
@@ -33,7 +34,7 @@ static void print_tokens(t_list *t)
 	}
 	printf("===== print_tokens: end =====\n");
 }
-
+/*
 static void print_args(t_list *a)
 {
 	char	*a_p;
@@ -94,22 +95,41 @@ static void print_commands(t_list *c)
 	}
 	printf("===== print_commands: end =====\n");
 }
+*/
 /* end: for debug */
+
+static bool	is_line_empty(char *str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] != ' ' && str[i] != '\t')
+			return (false);
+		i++;
+	}
+	return (true);
+}
 
 static void	minishell(char *line, char **envp)
 {
 	t_list	*tokens;
 	t_list	*commands;
+	bool	is_quote_not_closed;
 
-	tokens = lexer(line);
-	print_tokens(tokens);
-	if (validate_and_expand(tokens))
+	if (is_line_empty(line))
+		return ;
+	is_quote_not_closed = false;
+	tokens = lexer(line, &is_quote_not_closed);
+	if (validate_and_expand(tokens, is_quote_not_closed))
 	{
 		ft_lstclear(&tokens, destruct_token);
 		return ;
 	}
+	print_tokens(tokens);
 	commands = parser(tokens);
-	print_commands(commands);
+	//print_commands(commands);
 	ft_lstclear(&tokens, destruct_token);
 	executor(commands, &envp);
 	ft_lstclear(&commands, destruct_command);
@@ -140,7 +160,7 @@ int	main(int argc, char **argv, char **envp)
 		add_history(line);
 		update_line(&line);
 	}
-	ft_printf("exit\n");
 	rl_clear_history();
+	ft_printf("exit\n");
 	return (0);
 }

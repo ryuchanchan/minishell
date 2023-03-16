@@ -6,12 +6,13 @@
 
 # include "quotes.h"
 # include "token.h"
+# include "ms_error.h"
 
 typedef struct s_lexer {
     char            *start;
     t_status_quotes status;
 } t_lexer;
 
-t_list  *lexer(char *input);
+t_list  *lexer(char *input, bool *is_quote_not_closed_p);
 
 #endif

@@ -1,5 +1,11 @@
 #include "validate_and_expand.h"
 
+static bool	print_quote_error_return_true(void)
+{
+	ft_putendl_fd(MSG_SYNTAX_ERR_QUOTE, STDERR_FILENO);
+	return (true);
+}
+
 static bool	print_error_return_true(char *s)
 {
 	ft_putstr_fd(MSG_SYNTAX_ERR_PREFIX, STDERR_FILENO);
@@ -13,18 +19,20 @@ static void	expand(char **str_p)
 	char	*expanded;
 
 	expanded = expansion(*str_p);
-		if (!expanded)
-			exit(1);
+	if (!expanded)
+		fatal_error("expansion");
 	free(*str_p);
 	*str_p = expanded;
 }
 
-bool	validate_and_expand(t_list *tokens)
+bool	validate_and_expand(t_list *tokens, bool is_quote_not_closed)
 {
 	t_list			*list;
 	t_token			*t_p;
 	t_token_type	type_prev;
 
+	if (is_quote_not_closed)
+		return (print_quote_error_return_true());
 	type_prev = T_PIPE;
 	list = tokens;
 	while (list)

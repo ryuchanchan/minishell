@@ -16,15 +16,18 @@ int	do_heredoc(char *str, int tmpin, int tmpout)
 	initialize_heredoc(tmpin, tmpout);
 	if (pipe(fd_pipe) < 0)
 		fatal_error("executor");
-	line = readline(PREFIX_HEREDOC);
-	while (line && ft_strncmp(line, str, ft_strlen(str) + 1) != 0)
+	line = "";
+	while (line)
 	{
+		line = readline(PREFIX_HEREDOC);
+		if (!line || ft_strncmp(line, str, ft_strlen(str) + 1) == 0)
+		{
+			free(line);
+			break ;
+		}
 		ft_putendl_fd(line, fd_pipe[1]);
 		free(line);
-		line = readline(PREFIX_HEREDOC);
 	}
-	if (line)
-		free(line);
 	close(fd_pipe[1]);
 	return (fd_pipe[0]);
 }

@@ -122,7 +122,7 @@ static void	minishell(char *line, char **envp)
 		return ;
 	is_quote_not_closed = false;
 	tokens = lexer(line, &is_quote_not_closed);
-	if (validate_and_expand(tokens, is_quote_not_closed))
+	if (validate_and_expand(tokens, envp, is_quote_not_closed))
 	{
 		ft_lstclear(&tokens, destruct_token);
 		return ;
@@ -135,32 +135,29 @@ static void	minishell(char *line, char **envp)
 	ft_lstclear(&commands, destruct_command);
 }
 
-static void	update_line(char **line_p)
-{
-	free(*line_p);
-	*line_p = readline(PREFIX_SHELL);
-}
-
 int	main(int argc, char **argv, char **envp)
 {
 	char	*line;
+	char	**env_clone;
 
 	(void)argc;
 	(void)argv;
+	env_clone = sa_clone((const char **)envp);
 	set_signal();
-	line = readline(PREFIX_SHELL);
+	line = "";
 	while (line)
 	{
-		if (ft_strlen(line) <= 0)
+		line = readline(PREFIX_SHELL);
+		if (line && ft_strlen(line) > 0)
 		{
-			update_line(&line);
-			continue ;
+			minishell(line, env_clone);
+			add_history(line);
 		}
-		minishell(line, envp);
-		add_history(line);
-		update_line(&line);
+		if (line)
+			free(line);
 	}
 	rl_clear_history();
+	sa_free(env_clone);
 	ft_printf("exit\n");
 	return (0);
 }

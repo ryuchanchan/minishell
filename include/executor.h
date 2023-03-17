@@ -8,6 +8,7 @@
 # include <readline/history.h>
 
 # include "command.h"
+# include "string_array.h"
 # include "ms_error.h"
 
 # define PREFIX_HEREDOC "heredoc> "

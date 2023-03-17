@@ -68,7 +68,8 @@ bool do_redirect(t_list *command, int fdin, int tmpin, int tmpout)
 	redirect_input(((t_command *)command->content)->redirections, &fdin, tmpin, tmpout);
 	if (fdin < 0)
 		return (true);
-	dup2(fdin, STDIN_FILENO);
+    if (dup2(fdin, STDIN_FILENO) < 0)
+		fatal_error("executor");
 	close(fdin);
 	if (command->next)
 	{
@@ -81,7 +82,8 @@ bool do_redirect(t_list *command, int fdin, int tmpin, int tmpout)
 	redirect_output(((t_command *)command->content)->redirections, &fdout);
 	if (fdout < 0)
 		return (true) ;
-	dup2(fdout, STDOUT_FILENO);
+    if (dup2(fdout, STDOUT_FILENO) < 0)
+		fatal_error("executor");
 	close(fdout);
 	return (false);
 }

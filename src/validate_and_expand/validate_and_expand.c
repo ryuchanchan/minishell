@@ -14,18 +14,18 @@ static bool	print_error_return_true(char *s)
 	return (true);
 }
 
-static void	expand(char **str_p)
+static void	expand(char **str_p, const char **envp)
 {
 	char	*expanded;
 
-	expanded = expansion(*str_p);
+	expanded = expansion(*str_p, envp);
 	if (!expanded)
 		fatal_error("expansion");
 	free(*str_p);
 	*str_p = expanded;
 }
 
-bool	validate_and_expand(t_list *tokens, bool is_quote_not_closed)
+bool	validate_and_expand(t_list *tokens, char **envp, bool is_quote_not_closed)
 {
 	t_list			*list;
 	t_token			*t_p;
@@ -42,7 +42,7 @@ bool	validate_and_expand(t_list *tokens, bool is_quote_not_closed)
 			return (print_error_return_true(t_p->str));
 		if (is_redirection(type_prev) && t_p->type != T_WORD)
 			return (print_error_return_true(t_p->str));
-		expand(&(t_p->str));
+		expand(&(t_p->str), (const char **)envp);
 		type_prev = t_p->type;
 		list = list->next;
 	}

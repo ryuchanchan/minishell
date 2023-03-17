@@ -1,35 +1,21 @@
 #include "executor.h"
 
-static char    **list_to_array(t_list *list)
-{
-    size_t  i;
-    size_t  len;
-    char    **arr;
-
-    len = (size_t)ft_lstsize(list);
-    arr = (char **)malloc(sizeof(char *) * (len + 1));
-    if (!arr)
-		fatal_error("executor");
-	i = 0;
-    while (list != NULL)
-    {
-        arr[i++] = (char *)list->content;
-        list = list->next;
-    }
-    arr[i] = NULL;
-    return (arr);
-}
-
 static void initialize_fds(int *tmpin_p, int *tmpout_p)
 {
 	*tmpin_p = dup(STDIN_FILENO);
+	if (*tmpin_p < 0)
+		fatal_error("executor");
 	*tmpout_p = dup(STDOUT_FILENO);
+	if (*tmpout_p < 0)
+		fatal_error("executor");
 }
 
 static void finalize_fds(int tmpin, int tmpout)
 {
-	dup2(tmpin, STDIN_FILENO);
-	dup2(tmpout, STDOUT_FILENO);
+	if (dup2(tmpin, STDIN_FILENO) < 0)
+		fatal_error("executor");
+	if (dup2(tmpout, STDOUT_FILENO) < 0)
+		fatal_error("executor");
 	close(tmpin);
 	close(tmpout);
 }
@@ -40,7 +26,7 @@ static void	do_exec(t_list *command, char ***envp_p)
 
 	if (!((t_command *)command->content)->args)
 		return ;
-	args = list_to_array(((t_command *)command->content)->args);
+	args = sa_from_list(((t_command *)command->content)->args);
 	if (!args)
 		fatal_error("executor");
 	((t_command *)command->content)->pid = fork();

@@ -12,6 +12,8 @@ SRCS		=	$(DIR_SRC)/main.c					\
 				$(DIR_SRC)/signal/set_signal.c		\
 				$(DIR_SRC)/utils/quotes.c			\
 				$(DIR_SRC)/utils/string_array.c		\
+				$(DIR_SRC)/env/key_value.c		\
+				$(DIR_SRC)/env/ms_env.c		\
 				$(DIR_SRC)/lexer/token.c			\
 				$(DIR_SRC)/lexer/lexer.c			\
 				$(DIR_SRC)/parser/redirection.c		\

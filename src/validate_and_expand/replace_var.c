@@ -20,18 +20,21 @@ static char	*get_name(const char *src, size_t *i)
 	return (ft_strndup(&src[start], *i - start));
 }
 
-static char	*get_val(const char *name)
+static char	*get_val(const char *name, const char **envp)
 {
 	char	*val;
+	t_kv	*kv;
 
 	if (ft_strcmp(name, "?") == 0)
 	{
 		return (ft_strdup("{state_result}"));// Todo implements
 	}
-	val = getenv(name);
-	if (!val)
+	kv = env_get_value(envp, name);
+	if (!kv)
 		return (ft_strdup(""));
-	return (ft_strdup(val));
+	val = ft_strdup(kv->value);
+	destruct_kv(&kv);
+	return (val);
 }
 
 static void	join_strs(char *before, char *val, char *after, t_expansions *ex)
@@ -47,7 +50,7 @@ static void	join_strs(char *before, char *val, char *after, t_expansions *ex)
 	free(tmp);
 }
 
-void	replace_var(t_expansions *ex)
+void	replace_var(t_expansions *ex, const char **envp)
 {
 	char	*before;
 	char	*name;
@@ -61,7 +64,7 @@ void	replace_var(t_expansions *ex)
 	after = ft_strdup(&ex->src[ex->i]);
 	if (!before || !name || !after)
 		fatal_error("expansion");
-	val = get_val(name);
+	val = get_val(name, envp);
 	if (!val)
 		fatal_error("expansion");
 	join_strs(before, val, after, ex);

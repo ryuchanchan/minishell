@@ -4,6 +4,7 @@
 # include "quotes.h"
 # include "token.h"
 # include "ms_error.h"
+# include "ms_env.h"
 
 typedef struct	e_expansions
 {
@@ -14,7 +15,7 @@ typedef struct	e_expansions
 	t_status_quotes status;
 }	t_expansions;
 
-char	*expansion(const char *src);
-void	replace_var(t_expansions *ex);
+char	*expansion(const char *src, const char **envp);
+void	replace_var(t_expansions *ex, const char **envp);
 
 #endif

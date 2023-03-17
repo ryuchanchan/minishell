@@ -6,3 +6,5 @@ minishell
 *.o
 *.a
 nopermission.txt
+test.c
+test

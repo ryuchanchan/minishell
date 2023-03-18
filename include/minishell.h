@@ -8,7 +8,6 @@
 # include "expansion.h"
 # include "validate_and_expand.h"
 
-
 # define PREFIX_SHELL "minishell> "
 
 #endif

@@ -1,4 +1,4 @@
-#include "executor.h"
+#include "do_redirect.h"
 
 static void update_fd(int *fd_p, int fd_new, char *filename)
 {

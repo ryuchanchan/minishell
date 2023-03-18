@@ -20,26 +20,6 @@ static void finalize_fds(int tmpin, int tmpout)
 	close(tmpout);
 }
 
-static void	do_exec(t_command *c_p, char ***envp_p)
-{
-	char **args;
-
-	if (!c_p->args)
-		return ;
-	args = sa_from_list(c_p->args);
-	if (!args)
-		fatal_error("executor");
-	c_p->pid = fork();
-	if (c_p->pid == 0)
-	{
-		execve(args[0], args, *envp_p);
-		fatal_error(args[0]);
-	}
-	if (c_p->pid < 0)
-		fatal_error("executor");
-	free(args);
-}
-
 static int	wait_childs(t_list *commands)
 {
 	t_list		*command;
@@ -70,10 +50,12 @@ void	executor(t_list *commands, char ***envp_p)
 	int		fdin;
 	int		tmpin;
 	int		tmpout;
+	bool	is_piped;
 
 	initialize_fds(&tmpin, &tmpout);
 	fdin = dup(tmpin);
 	command = commands;
+	is_piped = (command->next != NULL);
 	while (command)
 	{
 		if (do_redirect(command, fdin, tmpin, tmpout))
@@ -81,7 +63,7 @@ void	executor(t_list *commands, char ***envp_p)
 			command = command->next;
 			continue ;
 		}
-		do_exec(command->content, envp_p);
+		do_exec(command->content, envp_p, is_piped);
 		command = command->next;
 	}
 	finalize_fds(tmpin, tmpout);

@@ -19,8 +19,9 @@ SRCS		=	$(DIR_SRC)/main.c					\
 				$(DIR_SRC)/parser/redirection.c		\
 				$(DIR_SRC)/parser/command.c			\
 				$(DIR_SRC)/parser/parser.c			\
-				$(DIR_SRC)/executor/redirect.c		\
-				$(DIR_SRC)/executor/heredoc.c		\
+				$(DIR_SRC)/executor/do_heredoc.c		\
+				$(DIR_SRC)/executor/do_redirect.c		\
+				$(DIR_SRC)/executor/do_exec.c		\
 				$(DIR_SRC)/executor/executor.c		\
 				$(DIR_SRC)/validate_and_expand/validate_and_expand.c	\
 				$(DIR_SRC)/validate_and_expand/expansion.c	\

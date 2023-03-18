@@ -29,7 +29,7 @@ static char	*get_val(const char *name, const char **envp)
 	{
 		return (ft_strdup("{state_result}"));// Todo implements
 	}
-	kv = env_get_value(envp, name);
+	kv = env_find(envp, name);
 	if (!kv)
 		return (ft_strdup(""));
 	val = ft_strdup(kv->value);

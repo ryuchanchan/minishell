@@ -20,22 +20,22 @@ static void finalize_fds(int tmpin, int tmpout)
 	close(tmpout);
 }
 
-static void	do_exec(t_list *command, char ***envp_p)
+static void	do_exec(t_command *c_p, char ***envp_p)
 {
 	char **args;
 
-	if (!((t_command *)command->content)->args)
+	if (!c_p->args)
 		return ;
-	args = sa_from_list(((t_command *)command->content)->args);
+	args = sa_from_list(c_p->args);
 	if (!args)
 		fatal_error("executor");
-	((t_command *)command->content)->pid = fork();
-	if (((t_command *)command->content)->pid == 0)
+	c_p->pid = fork();
+	if (c_p->pid == 0)
 	{
 		execve(args[0], args, *envp_p);
 		fatal_error(args[0]);
 	}
-	if (((t_command *)command->content)->pid < 0)
+	if (c_p->pid < 0)
 		fatal_error("executor");
 	free(args);
 }
@@ -81,7 +81,7 @@ void	executor(t_list *commands, char ***envp_p)
 			command = command->next;
 			continue ;
 		}
-		do_exec(command, envp_p);
+		do_exec(command->content, envp_p);
 		command = command->next;
 	}
 	finalize_fds(tmpin, tmpout);

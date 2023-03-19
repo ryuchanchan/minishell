@@ -38,7 +38,7 @@ static void do_exec_fork(t_command *c_p, char **args, char ***envp_p)
 	{
 		if (is_builtin(args[0]))
 			exit(do_exec_builtin(args, envp_p));
-		path_resolved = ft_strdup(args[0]);// パス解決関数
+		path_resolved = resolve_filename(args[0], envp_p);
 		if (!path_resolved)
 			fatal_error("executor");
 		execve(path_resolved, args, *envp_p);

@@ -70,7 +70,6 @@ bool do_redirect(t_list *command, int fdin, int tmpin, int tmpout)
 		return (true);
     if (dup2(fdin, STDIN_FILENO) < 0)
 		fatal_error("executor");
-    ft_printf("fdin: %d, tmin: %d\n", fdin, tmpin);
     close(fdin);
     if (command->next)
 	{

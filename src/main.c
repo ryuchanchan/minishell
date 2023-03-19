@@ -145,11 +145,15 @@ void initialize(t_ms_state **state_p, char **envp)
 	set_signal();
 }
 
-void finalize(t_ms_state *state_p)
+int	finalize(t_ms_state *state_p)
 {
-	rl_clear_history();
+	int state_final;
+
+	state_final = state_p->exit_status;
 	destruct_ms_state(state_p);
+	rl_clear_history();
 	ft_printf("exit\n");
+	return (state_final);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -172,6 +176,5 @@ int	main(int argc, char **argv, char **envp)
 		if (line)
 			free(line);
 	}
-	finalize(state_p);
-	return (0);
+	return (finalize(state_p));
 }

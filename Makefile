@@ -14,21 +14,22 @@ SRCS		=	$(DIR_SRC)/main.c					\
 				$(DIR_SRC)/utils/quotes.c			\
 				$(DIR_SRC)/utils/string_array.c		\
 				$(DIR_SRC)/utils/file_stat.c		\
-				$(DIR_SRC)/env/key_value.c		\
-				$(DIR_SRC)/env/ms_env.c		\
+				$(DIR_SRC)/env/key_value.c			\
+				$(DIR_SRC)/env/ms_env.c				\
 				$(DIR_SRC)/lexer/token.c			\
 				$(DIR_SRC)/lexer/lexer.c			\
 				$(DIR_SRC)/parser/redirection.c		\
 				$(DIR_SRC)/parser/command.c			\
 				$(DIR_SRC)/parser/parser.c			\
+				$(DIR_SRC)/validate_and_expand/validate_and_expand.c	\
+				$(DIR_SRC)/validate_and_expand/expansion.c	\
+				$(DIR_SRC)/validate_and_expand/replace_var.c	\
 				$(DIR_SRC)/executor/do_heredoc.c		\
 				$(DIR_SRC)/executor/do_redirect.c		\
 				$(DIR_SRC)/executor/do_exec.c		\
 				$(DIR_SRC)/executor/resolve_filename.c		\
 				$(DIR_SRC)/executor/executor.c		\
-				$(DIR_SRC)/validate_and_expand/validate_and_expand.c	\
-				$(DIR_SRC)/validate_and_expand/expansion.c	\
-				$(DIR_SRC)/validate_and_expand/replace_var.c	\
+				$(DIR_SRC)/builtin/echo.c
 
 OBJS		=	$(SRCS:.c=.o)
 

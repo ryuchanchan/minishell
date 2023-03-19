@@ -125,6 +125,7 @@ static void	minishell(char *line, t_ms_state *state_p)
 	if (validate_and_expand(tokens, state_p, is_quote_not_closed))
 	{
 		ft_lstclear(&tokens, destruct_token);
+		state_p->exit_status = STAT_SYNTAX_ERR;
 		return ;
 	}
 	commands = parser(tokens);

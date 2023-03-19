@@ -1,12 +1,9 @@
 #ifndef VALIDATE_AND_EXPAND_H
 # define VALIDATE_AND_EXPAND_H
 
-# include "expansion.h"
+# include "ms_error.h"
 # include "ms_state.h"
-
-# define	MSG_SYNTAX_ERR_QUOTE "syntax error: quotation isn't closed"
-# define	MSG_SYNTAX_ERR_PREFIX "syntax error near unexpected token `"
-# define	MSG_SYNTAX_ERR_SUFFIX "'"
+# include "expansion.h"
 
 bool	validate_and_expand(t_list *tokens, t_ms_state *state_p, bool is_quote_not_closed);
 

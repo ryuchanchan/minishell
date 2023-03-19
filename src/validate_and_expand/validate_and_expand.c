@@ -1,16 +1,14 @@
 #include "validate_and_expand.h"
 
-static bool	print_quote_error_return_true(void)
+static bool	quote_error_return_true(void)
 {
-	ft_putendl_fd(MSG_SYNTAX_ERR_QUOTE, STDERR_FILENO);
+	print_quote_error();
 	return (true);
 }
 
-static bool	print_error_return_true(char *s)
+static bool	syntax_error_return_true(char *s)
 {
-	ft_putstr_fd(MSG_SYNTAX_ERR_PREFIX, STDERR_FILENO);
-	ft_putstr_fd(s, STDERR_FILENO);
-	ft_putendl_fd(MSG_SYNTAX_ERR_SUFFIX, STDERR_FILENO);
+	print_syntax_error(s);
 	return (true);
 }
 
@@ -32,21 +30,21 @@ bool	validate_and_expand(t_list *tokens, t_ms_state *state_p, bool is_quote_not_
 	t_token_type	type_prev;
 
 	if (is_quote_not_closed)
-		return (print_quote_error_return_true());
+		return (quote_error_return_true());
 	type_prev = T_PIPE;
 	list = tokens;
 	while (list)
 	{
 		t_p = list->content;
 		if (type_prev == T_PIPE && t_p->type == T_PIPE)
-			return (print_error_return_true(t_p->str));
+			return (syntax_error_return_true(t_p->str));
 		if (is_redirection(type_prev) && t_p->type != T_WORD)
-			return (print_error_return_true(t_p->str));
+			return (syntax_error_return_true(t_p->str));
 		expand(&(t_p->str), state_p);
 		type_prev = t_p->type;
 		list = list->next;
 	}
 	if (type_prev != T_WORD)
-		return (print_error_return_true("newline"));
+		return (syntax_error_return_true("newline"));
 	return (false);
 }

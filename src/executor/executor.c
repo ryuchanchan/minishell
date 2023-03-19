@@ -20,27 +20,16 @@ static void finalize_fds(int tmpin, int tmpout)
 	close(tmpout);
 }
 
-static void	do_exec(t_list *command, char ***envp_p)
+static int get_exit_status(int status)
 {
-	char **args;
-
-	if (!((t_command *)command->content)->args)
-		return ;
-	args = sa_from_list(((t_command *)command->content)->args);
-	if (!args)
-		fatal_error("executor");
-	((t_command *)command->content)->pid = fork();
-	if (((t_command *)command->content)->pid == 0)
-	{
-		execve(args[0], args, *envp_p);
-		fatal_error(args[0]);
-	}
-	if (((t_command *)command->content)->pid < 0)
-		fatal_error("executor");
-	free(args);
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	if (WIFSIGNALED(status))
+		return (WTERMSIG(status) + 128);
+	return (-1);
 }
 
-static int	wait_childs(t_list *commands)
+static int	wait_childs(t_list *commands, bool is_piped)
 {
 	t_list		*command;
 	t_command	*c_p;
@@ -52,28 +41,32 @@ static int	wait_childs(t_list *commands)
 	{
 		c_p = command->content;
 		if (c_p->pid > 0)
+			if (waitpid(c_p->pid, &(c_p->status), 0) < 0)
+				fatal_error("executor");
+		if (!command->next)
 		{
-			waitpid(c_p->pid, &(c_p->status), 0);
-			if (!command->next)
-			{
-				(void)status;
-			}
+			if (c_p->pid == 0 && !is_piped)
+				status = c_p->status;
+			else
+				status = get_exit_status(c_p->status);
 		}
 		command = command->next;
 	}
 	return (status);
 }
 
-void	executor(t_list *commands, char ***envp_p)
+void	executor(t_list *commands, t_ms_state *state_p)
 {
 	t_list	*command;
 	int		fdin;
 	int		tmpin;
 	int		tmpout;
+	bool	is_piped;
 
 	initialize_fds(&tmpin, &tmpout);
 	fdin = dup(tmpin);
 	command = commands;
+	is_piped = (command->next != NULL);
 	while (command)
 	{
 		if (do_redirect(command, fdin, tmpin, tmpout))
@@ -81,9 +74,9 @@ void	executor(t_list *commands, char ***envp_p)
 			command = command->next;
 			continue ;
 		}
-		do_exec(command, envp_p);
+		do_exec(command->content, &(state_p->envp), is_piped);
 		command = command->next;
 	}
 	finalize_fds(tmpin, tmpout);
-	(void)wait_childs(commands);
+	state_p->exit_status = wait_childs(commands, is_piped);
 }

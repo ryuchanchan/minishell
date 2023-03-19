@@ -24,7 +24,7 @@ static ssize_t	env_get_index(const char **envp, const char *key)
 	return (-1);
 }
 
-t_kv	*env_get_value(const char **envp, const char *key)
+t_kv	*env_find(const char **envp, const char *key)
 {
 	ssize_t	index;
 	t_kv	*kv_p;
@@ -38,6 +38,7 @@ t_kv	*env_get_value(const char **envp, const char *key)
 	return (kv_p);
 }
 
+/*
 void	env_add(char ***envp_p, t_kv *kv_p)
 {
 	ssize_t	index;
@@ -99,3 +100,4 @@ void	env_delete(char ***envp_p, char *key)
 	free(*envp_p);
 	*envp_p = new;
 }
+*/

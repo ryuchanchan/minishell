@@ -1,4 +1,4 @@
-#include "executor.h"
+#include "do_redirect.h"
 
 static void update_fd(int *fd_p, int fd_new, char *filename)
 {
@@ -45,9 +45,9 @@ static void redirect_output(t_list *redirections, int *fdout)
     {
         r_p = (t_redirection *)redirection->content;
         if (r_p->type == T_REDIRECT_OUT_TRUNC)
-            fd = open(r_p->filename, O_RDWR|O_CREAT|O_TRUNC, 0644);
+            fd = open(r_p->filename, O_RDWR|O_CREAT|O_TRUNC, PERMISSION_NEW);
         else if (r_p->type == T_REDIRECT_OUT_APPEND)
-            fd = open(r_p->filename, O_RDWR|O_CREAT|O_APPEND, 0644);
+            fd = open(r_p->filename, O_RDWR|O_CREAT|O_APPEND, PERMISSION_NEW);
         else
         {
             redirection = redirection->next;
@@ -70,8 +70,8 @@ bool do_redirect(t_list *command, int fdin, int tmpin, int tmpout)
 		return (true);
     if (dup2(fdin, STDIN_FILENO) < 0)
 		fatal_error("executor");
-	close(fdin);
-	if (command->next)
+    close(fdin);
+    if (command->next)
 	{
 		pipe(pipe_fd);
 		fdout = pipe_fd[1];

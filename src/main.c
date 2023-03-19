@@ -15,7 +15,7 @@ void	destructor(void)
 		exit(1);
 	}
 }
-*/
+
 static void print_tokens(t_list *t)
 {
 	t_token	*t_p;
@@ -34,7 +34,7 @@ static void print_tokens(t_list *t)
 	}
 	printf("===== print_tokens: end =====\n");
 }
-/*
+
 static void print_args(t_list *a)
 {
 	char	*a_p;
@@ -112,7 +112,7 @@ static bool	is_line_empty(char *str)
 	return (true);
 }
 
-static void	minishell(char *line, char **envp)
+static void	minishell(char *line, t_ms_state *state_p)
 {
 	t_list	*tokens;
 	t_list	*commands;
@@ -122,42 +122,59 @@ static void	minishell(char *line, char **envp)
 		return ;
 	is_quote_not_closed = false;
 	tokens = lexer(line, &is_quote_not_closed);
-	if (validate_and_expand(tokens, envp, is_quote_not_closed))
+	if (validate_and_expand(tokens, state_p, is_quote_not_closed))
 	{
 		ft_lstclear(&tokens, destruct_token);
 		return ;
 	}
-	print_tokens(tokens);
 	commands = parser(tokens);
-	//print_commands(commands);
 	ft_lstclear(&tokens, destruct_token);
-	executor(commands, &envp);
+	executor(commands, state_p);
 	ft_lstclear(&commands, destruct_command);
+}
+
+void initialize(t_ms_state **state_p, char **envp)
+{
+	*state_p = malloc(sizeof(t_ms_state));
+	if (!*state_p)
+		fatal_error("initialize");
+	(*state_p)->exit_status = 0;
+	(*state_p)->envp = sa_clone((const char **)envp);
+	if (!(*state_p)->envp)
+		fatal_error("initialize");
+	set_signal();
+}
+
+int	finalize(t_ms_state *state_p)
+{
+	int state_final;
+
+	state_final = state_p->exit_status;
+	destruct_ms_state(state_p);
+	rl_clear_history();
+	ft_printf("exit\n");
+	return (state_final);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
-	char	*line;
-	char	**env_clone;
+	t_ms_state	*state_p;
+	char		*line;
 
 	(void)argc;
 	(void)argv;
-	env_clone = sa_clone((const char **)envp);
-	set_signal();
+	initialize(&state_p, envp);
 	line = "";
 	while (line)
 	{
 		line = readline(PREFIX_SHELL);
 		if (line && ft_strlen(line) > 0)
 		{
-			minishell(line, env_clone);
+			minishell(line, state_p);
 			add_history(line);
 		}
 		if (line)
 			free(line);
 	}
-	rl_clear_history();
-	sa_free(env_clone);
-	ft_printf("exit\n");
-	return (0);
+	return (finalize(state_p));
 }

@@ -45,9 +45,9 @@ static void redirect_output(t_list *redirections, int *fdout)
     {
         r_p = (t_redirection *)redirection->content;
         if (r_p->type == T_REDIRECT_OUT_TRUNC)
-            fd = open(r_p->filename, O_RDWR|O_CREAT|O_TRUNC, 0644);
+            fd = open(r_p->filename, O_RDWR|O_CREAT|O_TRUNC, PERMISSION_NEW);
         else if (r_p->type == T_REDIRECT_OUT_APPEND)
-            fd = open(r_p->filename, O_RDWR|O_CREAT|O_APPEND, 0644);
+            fd = open(r_p->filename, O_RDWR|O_CREAT|O_APPEND, PERMISSION_NEW);
         else
         {
             redirection = redirection->next;

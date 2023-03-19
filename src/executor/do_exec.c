@@ -24,19 +24,21 @@ static bool	is_builtin(char *arg_0)
 static int do_exec_builtin(char **args, char ***envp_p)
 {
 	if (ft_strcmp(args[0], "echo") == 0)
-		return echo(args, envp_p);
+		return (builtin_echo(args, envp_p));
+	/*
 	if (ft_strcmp(args[0], "cd") == 0)
-		return cd(args, envp_p);
+		return builtin_cd(args, envp_p);
 	if (ft_strcmp(args[0], "pwd") == 0)
-		return pwd(args, envp_p);
+		return builtin_pwd(args, envp_p);
 	if (ft_strcmp(args[0], "export") == 0)
-		return export(args, envp_p);
+		return builtin_export(args, envp_p);
 	if (ft_strcmp(args[0], "unset") == 0)
-		return unset(args, envp_p);
+		return builtin_unset(args, envp_p);
 	if (ft_strcmp(args[0], "env") == 0)
-		return env(args, envp_p);
+		return builtin_env(args, envp_p);
 	if (ft_strcmp(args[0], "exit") == 0)
-		return exit(args, envp_p);
+		return builtin_exit(args, envp_p);
+	*/
 	return (-1);
 }
 

@@ -3,12 +3,15 @@
 
 # include "../libft/include/libft.h"
 
-int	echo(char **args, char ***envp_p);
-int	cd(char **args, char ***envp_p);
-int	pwd(char **args, char ***envp_p);
-int	export(char **args, char ***envp_p);
-int	unset(char **args, char ***envp_p);
-int	env(char **args, char ***envp_p);
-int	exit(char **args, char ***envp_p);
+int	builtin_echo(char **args, char ***envp_p);
+
+/*
+int	builtin_cd(char **args, char ***envp_p);
+int	builtin_pwd(char **args, char ***envp_p);
+int	builtin_export(char **args, char ***envp_p);
+int	builtin_unset(char **args, char ***envp_p);
+int	builtin_env(char **args, char ***envp_p);
+int	builtin_exit(char **args, char ***envp_p);
+*/
 
 #endif

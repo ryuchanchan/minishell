@@ -14,7 +14,7 @@ static void	print_array(char **splitted, const size_t begin)
 	}
 }
 
-int	echo(char **args, char ***envp_p)
+int	builtin_echo(char **args, char ***envp_p)
 {
 	(void)envp_p;
 	if (args[1] && ft_strcmp(args[1], "-n") == 0)

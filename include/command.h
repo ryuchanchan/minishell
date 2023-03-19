@@ -3,14 +3,7 @@
 
 # include "redirection.h"
 
-typedef enum e_command_type {
-    C_PIPE,
-    C_COMMAND,
-	C_BUILDIN
-} t_command_type;
-
 typedef struct s_command {
-	t_command_type	type;
 	t_list			*args;
 	t_list			*redirections;
 	pid_t			pid;

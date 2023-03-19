@@ -11,7 +11,7 @@ static bool should_replace_var(t_status_quotes status, const char *src, size_t i
 	return (src[i + 1] == '?' || src[i + 1] == '_' || ft_isalpha(src[i + 1]));
 }
 
-char	*expansion(const char *src, const char **envp)
+char	*expansion(const char *src, t_ms_state *state_p)
 {
 	t_expansions ex;
 
@@ -24,7 +24,7 @@ char	*expansion(const char *src, const char **envp)
 	ex.j = 0;
 	while (ex.src[ex.i] != '\0')
 		if (should_replace_var(ex.status, ex.src, ex.i))
-			replace_var(&ex, envp);
+			replace_var(&ex, state_p);
 		else if (is_single_quote_begin(ex.status, ex.src, ex.i))
 			update_status(&(ex.status), IN_SINGLE_QUOTE, &(ex.i));
 		else if (is_double_quote_begin(ex.status, ex.src, ex.i))

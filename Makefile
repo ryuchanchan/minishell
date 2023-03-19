@@ -10,6 +10,7 @@ DIR_SRC		=	./src
 SRCS		=	$(DIR_SRC)/main.c					\
 				$(DIR_SRC)/error/ms_error.c			\
 				$(DIR_SRC)/signal/set_signal.c		\
+				$(DIR_SRC)/state/ms_state.c			\
 				$(DIR_SRC)/utils/quotes.c			\
 				$(DIR_SRC)/utils/string_array.c		\
 				$(DIR_SRC)/env/key_value.c		\
@@ -25,7 +26,7 @@ SRCS		=	$(DIR_SRC)/main.c					\
 				$(DIR_SRC)/executor/executor.c		\
 				$(DIR_SRC)/validate_and_expand/validate_and_expand.c	\
 				$(DIR_SRC)/validate_and_expand/expansion.c	\
-				$(DIR_SRC)/validate_and_expand/replace_var.c
+				$(DIR_SRC)/validate_and_expand/replace_var.c	\
 
 OBJS		=	$(SRCS:.c=.o)
 

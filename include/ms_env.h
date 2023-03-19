@@ -1,6 +1,7 @@
 #ifndef MS_ENV_H
 # define MS_ENV_H
 
+# include "ms_error.h"
 # include "key_value.h"
 
 t_kv 	*env_find(const char **envp, const char *key);

@@ -1,9 +1,7 @@
 #ifndef STRING_ARRAY_H
-
 # define STRING_ARRAY_H
 
 # include <stdlib.h>
-# include "ms_error.h"
 # include "../libft/include/libft.h"
 
 void	sa_print(const char **sa, size_t begin);

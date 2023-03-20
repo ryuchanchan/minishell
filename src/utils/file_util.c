@@ -1,30 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   key_value.h                                        :+:      :+:    :+:   */
+/*   file_util.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: toryoshi </var/mail/toryoshi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/21 00:16:01 by toryoshi          #+#    #+#             */
-/*   Updated: 2023/03/21 00:16:03 by toryoshi         ###   ########.fr       */
+/*   Created: 2023/03/21 01:30:05 by toryoshi          #+#    #+#             */
+/*   Updated: 2023/03/21 01:30:07 by toryoshi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef KEY_VALUE_H
-# define KEY_VALUE_H
+#include "file_util.h"
 
-# define KV_SEP "="
-
-# include "string_array.h"
-
-typedef struct e_kv
+bool	is_directory(char *filepath)
 {
-	char	*key;
-	char	*value;
-}	t_kv;
+	struct stat	buf;
 
-t_kv	*construct_kv(const char *str);
-void	destruct_kv(t_kv **key_value_pp);
-char	*kv_to_string(const t_kv *key_value_p);
+	if (lstat(filepath, &buf) != 0)
+		return (false);
+	return (S_ISDIR(buf.st_mode));
+}
 
-#endif
+bool	is_regular_file(char *filepath)
+{
+	struct stat	buf;
+
+	if (lstat(filepath, &buf) != 0)
+		return (false);
+	return (S_ISREG(buf.st_mode));
+}

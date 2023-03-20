@@ -2,6 +2,8 @@
 .vscode
 result_leaks
 minishell
+!minishell.c
+!minishell.h
 *.out
 *.o
 *.a

@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   executor.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: toryoshi </var/mail/toryoshi>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/21 00:43:49 by toryoshi          #+#    #+#             */
+/*   Updated: 2023/03/21 00:43:53 by toryoshi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "executor.h"
 
-static void initialize_fds(int *tmpin_p, int *tmpout_p)
+static void	initialize_fds(int *tmpin_p, int *tmpout_p)
 {
 	*tmpin_p = dup(STDIN_FILENO);
 	if (*tmpin_p < 0)
@@ -10,17 +22,15 @@ static void initialize_fds(int *tmpin_p, int *tmpout_p)
 		fatal_error("executor");
 }
 
-static void finalize_fds(int tmpin, int tmpout)
+static void	finalize_fds(int tmpin, int tmpout)
 {
-	if (dup2(tmpin, STDIN_FILENO) < 0)
-		fatal_error("executor");
-	if (dup2(tmpout, STDOUT_FILENO) < 0)
-		fatal_error("executor");
+	safe_dup2(tmpin, STDIN_FILENO, "executor");
+	safe_dup2(tmpout, STDOUT_FILENO, "executor");
 	close(tmpin);
 	close(tmpout);
 }
 
-static int get_exit_status(int status)
+static int	get_exit_status(int status)
 {
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));

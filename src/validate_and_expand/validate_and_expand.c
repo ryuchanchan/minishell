@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   validate_and_expand.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: toryoshi </var/mail/toryoshi>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/21 01:39:23 by toryoshi          #+#    #+#             */
+/*   Updated: 2023/03/21 01:39:37 by toryoshi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "validate_and_expand.h"
 
 static bool	quote_error_return_true(void)
@@ -23,13 +35,13 @@ static void	expand(char **str_p, t_ms_state *state_p)
 	*str_p = expanded;
 }
 
-bool	validate_and_expand(t_list *tokens, t_ms_state *state_p, bool is_quote_not_closed)
+bool	check_and_expand(t_list *tokens, t_ms_state *state, bool is_open_quote)
 {
 	t_list			*list;
 	t_token			*t_p;
 	t_token_type	type_prev;
 
-	if (is_quote_not_closed)
+	if (is_open_quote)
 		return (quote_error_return_true());
 	type_prev = T_PIPE;
 	list = tokens;
@@ -40,7 +52,7 @@ bool	validate_and_expand(t_list *tokens, t_ms_state *state_p, bool is_quote_not_
 			return (syntax_error_return_true(t_p->str));
 		if (is_redirection(type_prev) && t_p->type != T_WORD)
 			return (syntax_error_return_true(t_p->str));
-		expand(&(t_p->str), state_p);
+		expand(&(t_p->str), state);
 		type_prev = t_p->type;
 		list = list->next;
 	}

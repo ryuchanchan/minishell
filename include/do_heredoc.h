@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   do_heredoc.h                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: toryoshi </var/mail/toryoshi>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/21 00:15:30 by toryoshi          #+#    #+#             */
+/*   Updated: 2023/03/21 00:15:33 by toryoshi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef DO_HEREDOC_H
 # define DO_HEREDOC_H
 
@@ -6,6 +18,7 @@
 # include <readline/history.h>
 
 # include "command.h"
+# include "fd_util.h"
 # include "ms_error.h"
 # include "signal_flag.h"
 

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   do_exec.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: toryoshi </var/mail/toryoshi>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/21 00:41:36 by toryoshi          #+#    #+#             */
+/*   Updated: 2023/03/21 00:42:08 by toryoshi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "do_exec.h"
 
 static bool	is_builtin(char *arg_0)
@@ -21,7 +33,7 @@ static bool	is_builtin(char *arg_0)
 	return (false);
 }
 
-static int do_exec_builtin(char **args, char ***envp_p)
+static int	do_exec_builtin(char **args, char ***envp_p)
 {
 	if (ft_strcmp(args[0], "echo") == 0)
 		return (builtin_echo(args, envp_p));
@@ -42,9 +54,9 @@ static int do_exec_builtin(char **args, char ***envp_p)
 	return (-1);
 }
 
-static void do_exec_fork(t_command *c_p, char **args, char ***envp_p)
+static void	do_exec_fork(t_command *c_p, char **args, char ***envp_p)
 {
-	char *path_resolved;
+	char	*path_resolved;
 
 	c_p->pid = fork();
 	if (c_p->pid == 0)
@@ -64,7 +76,7 @@ static void do_exec_fork(t_command *c_p, char **args, char ***envp_p)
 
 void	do_exec(t_command *c_p, char ***envp_p, bool is_piped)
 {
-	char **args;
+	char	**args;
 
 	if (!c_p->args)
 		return ;

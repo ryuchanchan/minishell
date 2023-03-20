@@ -1,30 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   key_value.h                                        :+:      :+:    :+:   */
+/*   fd_util.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: toryoshi </var/mail/toryoshi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/21 00:16:01 by toryoshi          #+#    #+#             */
-/*   Updated: 2023/03/21 00:16:03 by toryoshi         ###   ########.fr       */
+/*   Created: 2023/03/21 02:57:30 by toryoshi          #+#    #+#             */
+/*   Updated: 2023/03/21 02:57:35 by toryoshi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef KEY_VALUE_H
-# define KEY_VALUE_H
+#ifndef FD_UTIL_H
+# define FD_UTIL_H
 
-# define KV_SEP "="
+# include <unistd.h>
 
-# include "string_array.h"
+# include "ms_error.h"
 
-typedef struct e_kv
-{
-	char	*key;
-	char	*value;
-}	t_kv;
-
-t_kv	*construct_kv(const char *str);
-void	destruct_kv(t_kv **key_value_pp);
-char	*kv_to_string(const t_kv *key_value_p);
+void	safe_dup2(int fildes, int fildes2, char *msg_err);
 
 #endif

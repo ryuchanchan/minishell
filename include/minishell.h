@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: toryoshi </var/mail/toryoshi>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/21 00:16:16 by toryoshi          #+#    #+#             */
+/*   Updated: 2023/03/21 00:16:18 by toryoshi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -11,5 +23,7 @@
 # include "validate_and_expand.h"
 
 # define PREFIX_SHELL "minishell> "
+
+void	minishell(t_ms_state *state_p);
 
 #endif

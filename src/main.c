@@ -130,11 +130,17 @@ static void	minishell(char *line, t_ms_state *state_p)
 	}
 	commands = parser(tokens);
 	ft_lstclear(&tokens, destruct_token);
-	executor(commands, state_p);
+	state_p->exit_status = executor(commands, state_p);
 	ft_lstclear(&commands, destruct_command);
 }
 
-void initialize(t_ms_state **state_p, char **envp)
+static int check_state() {
+	if (get_flag() == SF_SIGINT)
+        rl_done = true;
+	return (0);
+}
+
+static void	initialize(t_ms_state **state_p, char **envp)
 {
 	*state_p = malloc(sizeof(t_ms_state));
 	if (!*state_p)
@@ -146,7 +152,7 @@ void initialize(t_ms_state **state_p, char **envp)
 	set_signal();
 }
 
-int	finalize(t_ms_state *state_p)
+static int	finalize(t_ms_state *state_p)
 {
 	int state_final;
 
@@ -168,14 +174,23 @@ int	main(int argc, char **argv, char **envp)
 	line = "";
 	while (line)
 	{
+		reset_flag();
+		rl_event_hook = check_state;
 		line = readline(PREFIX_SHELL);
+		if (get_flag() == SF_SIGINT)
+		{
+			rl_on_new_line();
+			rl_replace_line("", 0);
+			free(line);
+			state_p->exit_status = 1;
+			continue;
+		}
 		if (line && ft_strlen(line) > 0)
 		{
 			minishell(line, state_p);
 			add_history(line);
 		}
-		if (line)
-			free(line);
+		free(line);
 	}
 	return (finalize(state_p));
 }

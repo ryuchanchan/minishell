@@ -20,7 +20,7 @@ int	do_heredoc(char *str, int tmpin, int tmpout)
 	while (line)
 	{
 		line = readline(PREFIX_HEREDOC);
-		if (!line || ft_strncmp(line, str, ft_strlen(str) + 1) == 0)
+		if (!line || ft_strncmp(line, str, ft_strlen(str) + 1) == 0 || get_flag() == SF_SIGINT)
 		{
 			free(line);
 			break ;

@@ -5,7 +5,9 @@
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+
 # include "../libft/include/libft.h"
+# include "signal_flag.h"
 
 void set_signal(void);
 

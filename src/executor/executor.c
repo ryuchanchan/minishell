@@ -52,31 +52,36 @@ static int	wait_childs(t_list *commands, bool is_piped)
 		}
 		command = command->next;
 	}
+	if (has_signal_interrupt())
+		ft_printf("\n");
 	return (status);
 }
 
-void	executor(t_list *commands, t_ms_state *state_p)
+int	executor(t_list *commands, t_ms_state *state_p)
 {
 	t_list	*command;
 	int		fdin;
-	int		tmpin;
-	int		tmpout;
 	bool	is_piped;
 
-	initialize_fds(&tmpin, &tmpout);
-	fdin = dup(tmpin);
+	initialize_fds(&state_p->tmpin, &state_p->tmpout);
+	fdin = dup(state_p->tmpin);
 	command = commands;
 	is_piped = (command->next != NULL);
 	while (command)
 	{
-		if (do_redirect(command, fdin, tmpin, tmpout))
+		if (do_redirect(command, fdin, state_p->tmpin, state_p->tmpout))
 		{
+			if (get_flag() == SF_SIGINT)
+			{
+				finalize_fds(state_p->tmpin, state_p->tmpout);
+				return (1);
+			}
 			command = command->next;
 			continue ;
 		}
 		do_exec(command->content, &(state_p->envp), is_piped);
 		command = command->next;
 	}
-	finalize_fds(tmpin, tmpout);
-	state_p->exit_status = wait_childs(commands, is_piped);
+	finalize_fds(state_p->tmpin, state_p->tmpout);
+	return (wait_childs(commands, is_piped));
 }

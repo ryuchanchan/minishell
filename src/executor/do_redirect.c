@@ -57,9 +57,9 @@ static void	redirect_output(t_list *rs, int *fdout)
 	{
 		r_p = (t_redirection *)redirection->content;
 		if (r_p->type == T_REDIRECT_OUT_TRUNC)
-			fd = open(r_p->filename, O_RDWR | O_CREAT | O_TRUNC, PERMISSION_NEW);
+			fd = open(r_p->filename, O_RDWR | O_CREAT | O_TRUNC, PERMISSION);
 		else if (r_p->type == T_REDIRECT_OUT_APPEND)
-			fd = open(r_p->filename, O_RDWR | O_CREAT | O_APPEND, PERMISSION_NEW);
+			fd = open(r_p->filename, O_RDWR | O_CREAT | O_APPEND, PERMISSION);
 		else
 		{
 			redirection = redirection->next;
@@ -82,8 +82,7 @@ bool	do_redirect(t_list *command, int fdin, int tmpin, int tmpout)
 	redirect_input(c_p->redirections, &fdin, tmpin, tmpout);
 	if (fdin < 0 || get_flag() == SF_SIGINT)
 		return (true);
-	if (dup2(fdin, STDIN_FILENO) < 0)
-		fatal_error("executor");
+	safe_dup2(fdin, STDIN_FILENO, "executor");
 	close(fdin);
 	if (command->next)
 	{
@@ -96,8 +95,7 @@ bool	do_redirect(t_list *command, int fdin, int tmpin, int tmpout)
 	redirect_output(c_p->redirections, &fdout);
 	if (fdout < 0)
 		return (true);
-	if (dup2(fdout, STDOUT_FILENO) < 0)
-		fatal_error("executor");
+	safe_dup2(fdout, STDOUT_FILENO, "executor");
 	close(fdout);
 	return (false);
 }

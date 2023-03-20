@@ -24,4 +24,6 @@
 
 # define PREFIX_SHELL "minishell> "
 
+void	minishell(t_ms_state *state_p);
+
 #endif

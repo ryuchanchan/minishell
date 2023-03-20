@@ -24,10 +24,8 @@ static void	initialize_fds(int *tmpin_p, int *tmpout_p)
 
 static void	finalize_fds(int tmpin, int tmpout)
 {
-	if (dup2(tmpin, STDIN_FILENO) < 0)
-		fatal_error("executor");
-	if (dup2(tmpout, STDOUT_FILENO) < 0)
-		fatal_error("executor");
+	safe_dup2(tmpin, STDIN_FILENO, "executor");
+	safe_dup2(tmpout, STDOUT_FILENO, "executor");
 	close(tmpin);
 	close(tmpout);
 }

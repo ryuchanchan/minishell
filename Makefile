@@ -22,7 +22,8 @@ DIR_SRC		=	./src
 SRCS		=	$(DIR_SRC)/main.c					\
 				$(DIR_SRC)/utils/quotes.c			\
 				$(DIR_SRC)/utils/string_array.c		\
-				$(DIR_SRC)/utils/file_stat.c		\
+				$(DIR_SRC)/utils/file_util.c		\
+				$(DIR_SRC)/utils/fd_util.c			\
 				$(DIR_SRC)/error/ms_error.c			\
 				$(DIR_SRC)/signal/signal_flag.c		\
 				$(DIR_SRC)/signal/ms_signal.c		\
@@ -42,7 +43,8 @@ SRCS		=	$(DIR_SRC)/main.c					\
 				$(DIR_SRC)/executor/do_redirect.c		\
 				$(DIR_SRC)/executor/do_exec.c		\
 				$(DIR_SRC)/executor/resolve_filename.c		\
-				$(DIR_SRC)/executor/executor.c
+				$(DIR_SRC)/executor/executor.c				\
+				$(DIR_SRC)/minishell/minishell.c
 
 OBJS		=	$(SRCS:.c=.o)
 

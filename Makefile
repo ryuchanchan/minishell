@@ -18,6 +18,9 @@ SRCS		=	$(DIR_SRC)/main.c					\
 				$(DIR_SRC)/env/key_value.c			\
 				$(DIR_SRC)/env/ms_env.c				\
 				$(DIR_SRC)/builtin/echo.c			\
+				$(DIR_SRC)/builtin/env.c			\
+				$(DIR_SRC)/builtin/key_value.c		\
+				$(DIR_SRC)/builtin/exit.c			\
 				$(DIR_SRC)/lexer/token.c			\
 				$(DIR_SRC)/lexer/lexer.c			\
 				$(DIR_SRC)/parser/redirection.c		\

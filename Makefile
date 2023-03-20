@@ -23,6 +23,7 @@ SRCS		=	$(DIR_SRC)/main.c					\
 				$(DIR_SRC)/builtin/export.c			\
 				$(DIR_SRC)/builtin/key_value.c		\
 				$(DIR_SRC)/builtin/pwd.c			\
+				$(DIR_SRC)/builtin/unset.c			\
 				$(DIR_SRC)/builtin/exit.c			\
 				$(DIR_SRC)/lexer/token.c			\
 				$(DIR_SRC)/lexer/lexer.c			\

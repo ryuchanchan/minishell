@@ -29,9 +29,9 @@ static int do_exec_builtin(char **args, char ***envp_p)
 		return builtin_cd(args, envp_p);
 	if (ft_strcmp(args[0], "env") == 0)
 		return (builtin_env(args, envp_p));
-	/*
 	if (ft_strcmp(args[0], "pwd") == 0)
 		return builtin_pwd(args, envp_p);
+	/*
 	if (ft_strcmp(args[0], "export") == 0)
 		return builtin_export(args, envp_p);
 	if (ft_strcmp(args[0], "unset") == 0)

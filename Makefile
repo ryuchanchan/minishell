@@ -44,7 +44,7 @@ SRCS		=	$(DIR_SRC)/main.c					\
 				$(DIR_SRC)/executor/do_exec.c		\
 				$(DIR_SRC)/executor/resolve_filename.c		\
 				$(DIR_SRC)/executor/executor.c				\
-				$(DIR_SRC)/minishell/minishell.c
+				$(DIR_SRC)/shell/minishell.c
 
 OBJS		=	$(SRCS:.c=.o)
 

@@ -6,13 +6,14 @@
 /*   By: toryoshi </var/mail/toryoshi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 01:41:21 by toryoshi          #+#    #+#             */
-/*   Updated: 2023/03/21 01:41:32 by toryoshi         ###   ########.fr       */
+/*   Updated: 2023/03/21 03:00:06 by toryoshi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int check_state() {
+static int	check_state(void)
+{
 	if (get_flag() == SF_SIGINT)
 		rl_done = true;
 	return (0);
@@ -33,7 +34,7 @@ static void	initialize(t_ms_state **state_p, char **envp)
 
 static int	finalize(t_ms_state *state_p)
 {
-	int status;
+	int	status;
 
 	status = state_p->exit_status;
 	destruct_ms_state(state_p);

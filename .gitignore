@@ -5,7 +5,7 @@ minishell
 *.out
 *.o
 *.a
-nopermission.txt
+*.txt
+*.dat
 test.c
 test
-g_flags.c

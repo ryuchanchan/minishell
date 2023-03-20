@@ -180,14 +180,19 @@ int	main(int argc, char **argv, char **envp)
 		if (get_flag() == SF_SIGINT)
 		{
 			rl_on_new_line();
-			rl_replace_line("", 0);
 			free(line);
 			state_p->exit_status = 1;
 			continue;
 		}
+		reset_flag();
 		if (line && ft_strlen(line) > 0)
 		{
 			minishell(line, state_p);
+			if (has_signal_interrupt() && state_p->exit_status != 0)
+			{
+				ft_printf("\n");
+				rl_on_new_line();
+			}
 			add_history(line);
 		}
 		free(line);

@@ -62,21 +62,6 @@ void env_delete(char ***envp_p, char *key)
     *envp_p = new;
 }
 
-// void print_env(char **envp)
-// {
-//     int i;
-
-//     i = 0; 
-//     // printf("envp = [\n");
-//     while (envp[i])
-//     {
-//         // printf("----------------\n");
-//         printf("%s\n", envp[i]);
-//         i++;
-//     }
-//     // printf("]\n");
-// }
-
 int	builtin_env(char **args, char ***envp_p)
 {
     (void)args;

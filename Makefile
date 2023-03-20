@@ -19,6 +19,7 @@ SRCS		=	$(DIR_SRC)/main.c					\
 				$(DIR_SRC)/env/ms_env.c				\
 				$(DIR_SRC)/builtin/echo.c			\
 				$(DIR_SRC)/builtin/env.c			\
+				$(DIR_SRC)/builtin/cd.c				\
 				$(DIR_SRC)/builtin/key_value.c		\
 				$(DIR_SRC)/builtin/exit.c			\
 				$(DIR_SRC)/lexer/token.c			\

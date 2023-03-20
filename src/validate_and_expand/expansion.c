@@ -2,9 +2,9 @@
 
 static bool should_replace_var(t_q_status status, const char *src, size_t i)
 {
-	if (status == IN_SINGLE_QUOTE || src[i] != '$')
+	if (status == Q_IN_SINGLE_QUOTE || src[i] != '$')
 		return (false);
-	if (src[i + 1] == '"' && status != IN_DOUBLE_QUOTE)
+	if (src[i + 1] == '"' && status != Q_IN_DOUBLE_QUOTE)
 		return (true);
 	if (src[i + 1] == '\'')
 		return (true);
@@ -15,22 +15,22 @@ char	*expansion(const char *src, t_ms_state *state_p)
 {
 	t_expansions ex;
 
-	ex.src = src;
+	ex.src = (char *)src;
 	ex.dest = ft_strdup(src);
 	if (!ex.dest)
 		return(NULL);
-	ex.status = NONE;
+	ex.status = Q_NONE;
 	ex.i = 0;
 	ex.j = 0;
 	while (ex.src[ex.i] != '\0')
 		if (should_replace_var(ex.status, ex.src, ex.i))
 			replace_var(&ex, state_p);
 		else if (is_single_quote_begin(ex.status, ex.src, ex.i))
-			update_status(&(ex.status), IN_SINGLE_QUOTE, &(ex.i));
+			update_status(&(ex.status), Q_IN_SINGLE_QUOTE, &(ex.i));
 		else if (is_double_quote_begin(ex.status, ex.src, ex.i))
-			update_status(&(ex.status), IN_DOUBLE_QUOTE, &(ex.i));
+			update_status(&(ex.status), Q_IN_DOUBLE_QUOTE, &(ex.i));
 		else if (is_quote_end(ex.status, ex.src, ex.i))
-			update_status(&(ex.status), NONE, &(ex.i));
+			update_status(&(ex.status), Q_NONE, &(ex.i));
 		else
 			ex.dest[ex.j++] = ex.src[ex.i++];
 	ex.dest[ex.j] = '\0';

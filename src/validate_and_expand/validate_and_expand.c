@@ -23,7 +23,7 @@ static void	expand(char **str_p, t_ms_state *state_p)
 	*str_p = expanded;
 }
 
-bool	check_and_expand(t_list *tokens, t_ms_state *state_p, bool is_open_quote)
+bool	check_and_expand(t_list *tokens, t_ms_state *state, bool is_open_quote)
 {
 	t_list			*list;
 	t_token			*t_p;
@@ -40,7 +40,7 @@ bool	check_and_expand(t_list *tokens, t_ms_state *state_p, bool is_open_quote)
 			return (syntax_error_return_true(t_p->str));
 		if (is_redirection(type_prev) && t_p->type != T_WORD)
 			return (syntax_error_return_true(t_p->str));
-		expand(&(t_p->str), state_p);
+		expand(&(t_p->str), state);
 		type_prev = t_p->type;
 		list = list->next;
 	}

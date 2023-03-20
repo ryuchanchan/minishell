@@ -23,7 +23,7 @@ typedef struct e_expansions
 {
 	size_t			i;
 	size_t			j;
-	const char		*src;
+	char			*src;
 	char			*dest;
 	t_q_status		status;
 }	t_expansions;

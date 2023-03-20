@@ -49,7 +49,7 @@ static bool is_separator(char c)
 static void initialize_lexer(t_lexer *lexer_p, char *line)
 {
     lexer_p->start = line;
-    lexer_p->status = NONE;
+    lexer_p->status = Q_NONE;
 }
 
 t_list  *lexer(char *line, bool *is_quote_not_closed_p)
@@ -64,18 +64,18 @@ t_list  *lexer(char *line, bool *is_quote_not_closed_p)
     while (line[i] != '\0')
     {
         if (is_single_quote_begin(lexer.status, line, i))
-            update_status(&lexer.status, IN_SINGLE_QUOTE, &i);
+            update_status(&lexer.status, Q_IN_SINGLE_QUOTE, &i);
         else if (is_double_quote_begin(lexer.status, line, i))
-            update_status(&lexer.status, IN_DOUBLE_QUOTE, &i);
+            update_status(&lexer.status, Q_IN_DOUBLE_QUOTE, &i);
         else if (is_quote_end(lexer.status, line, i))
-			update_status(&lexer.status, NONE, &i);
-        else if (is_separator(line[i]) && lexer.status == NONE)
+			update_status(&lexer.status, Q_NONE, &i);
+        else if (is_separator(line[i]) && lexer.status == Q_NONE)
             extract(line, &i, &lexer.start, &tokens);
         else
             i++;
     }
     add_token(&line[i], lexer.start, &tokens);
-    if (lexer.status != NONE)
+    if (lexer.status != Q_NONE)
         *is_quote_not_closed_p = true;
     return (tokens);
 }

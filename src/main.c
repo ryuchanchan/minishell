@@ -116,13 +116,13 @@ static void	minishell(char *line, t_ms_state *state_p)
 {
 	t_list	*tokens;
 	t_list	*commands;
-	bool	is_quote_not_closed;
+	bool	is_open_quote;
 
 	if (is_line_empty(line))
 		return ;
-	is_quote_not_closed = false;
-	tokens = lexer(line, &is_quote_not_closed);
-	if (check_and_expand(tokens, state_p, is_quote_not_closed))
+	is_open_quote = false;
+	tokens = lexer(line, &is_open_quote);
+	if (check_and_expand(tokens, state_p, is_open_quote))
 	{
 		ft_lstclear(&tokens, destruct_token);
 		state_p->exit_status = STAT_SYNTAX_ERR;

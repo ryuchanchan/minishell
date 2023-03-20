@@ -1,8 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   key_value.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: toryoshi </var/mail/toryoshi>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/21 00:37:48 by toryoshi          #+#    #+#             */
+/*   Updated: 2023/03/21 00:38:54 by toryoshi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "key_value.h"
 
 static char	*extract_key(const char *str, const char *position_sep)
 {
-	size_t n;
+	size_t	n;
+
 	if (!position_sep)
 		return (ft_strdup(str));
 	if (position_sep == str)

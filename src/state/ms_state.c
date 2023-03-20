@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ms_state.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: toryoshi </var/mail/toryoshi>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/21 01:29:19 by toryoshi          #+#    #+#             */
+/*   Updated: 2023/03/21 01:29:31 by toryoshi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ms_state.h"
 
-t_ms_state *construct_ms_state(char **envp)
+t_ms_state	*construct_ms_state(char **envp)
 {
 	t_ms_state	*state_p;
 

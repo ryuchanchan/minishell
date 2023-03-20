@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expansion.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: toryoshi </var/mail/toryoshi>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/21 01:35:10 by toryoshi          #+#    #+#             */
+/*   Updated: 2023/03/21 01:37:28 by toryoshi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "expansion.h"
 
-static bool should_replace_var(t_q_status status, const char *src, size_t i)
+static bool	should_replace_var(t_q_status status, const char *src, size_t i)
 {
 	if (status == Q_IN_SINGLE_QUOTE || src[i] != '$')
 		return (false);
@@ -13,16 +25,17 @@ static bool should_replace_var(t_q_status status, const char *src, size_t i)
 
 char	*expansion(const char *src, t_ms_state *state_p)
 {
-	t_expansions ex;
+	t_expansions	ex;
 
 	ex.src = (char *)src;
 	ex.dest = ft_strdup(src);
 	if (!ex.dest)
-		return(NULL);
+		return (NULL);
 	ex.status = Q_NONE;
 	ex.i = 0;
 	ex.j = 0;
 	while (ex.src[ex.i] != '\0')
+	{
 		if (should_replace_var(ex.status, ex.src, ex.i))
 			replace_var(&ex, state_p);
 		else if (is_single_quote_begin(ex.status, ex.src, ex.i))
@@ -33,6 +46,7 @@ char	*expansion(const char *src, t_ms_state *state_p)
 			update_status(&(ex.status), Q_NONE, &(ex.i));
 		else
 			ex.dest[ex.j++] = ex.src[ex.i++];
+	}
 	ex.dest[ex.j] = '\0';
 	return (ex.dest);
 }

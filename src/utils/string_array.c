@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   string_array.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: toryoshi </var/mail/toryoshi>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/21 01:30:44 by toryoshi          #+#    #+#             */
+/*   Updated: 2023/03/21 01:34:03 by toryoshi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "string_array.h"
 
 void	sa_print(const char **sa, size_t begin)
@@ -8,7 +20,7 @@ void	sa_print(const char **sa, size_t begin)
 	if (!sa)
 		return ;
 	while (sa[i])
-		ft_printf("%s\n",sa[i++]);
+		ft_printf("%s\n", sa[i++]);
 }
 
 void	sa_free(char **sa)
@@ -53,7 +65,7 @@ char	**sa_clone(const char **sa)
 		clone[i] = ft_strdup(sa[i]);
 		if (!clone[i])
 		{
-			while(i-- != 0)
+			while (i-- != 0)
 				free(clone[i]);
 			free(clone);
 			return (NULL);
@@ -66,20 +78,20 @@ char	**sa_clone(const char **sa)
 
 char	**sa_from_list(t_list *list)
 {
-    size_t  i;
-    size_t  len;
-    char    **arr;
+	size_t	i;
+	size_t	len;
+	char	**arr;
 
-    len = (size_t)ft_lstsize(list);
-    arr = (char **)malloc(sizeof(char *) * (len + 1));
-    if (!arr)
+	len = (size_t)ft_lstsize(list);
+	arr = (char **)malloc(sizeof(char *) * (len + 1));
+	if (!arr)
 		return (NULL);
 	i = 0;
-    while (list != NULL)
-    {
-        arr[i++] = (char *)list->content;
-        list = list->next;
-    }
-    arr[i] = NULL;
-    return (arr);
+	while (list != NULL)
+	{
+		arr[i++] = (char *)list->content;
+		list = list->next;
+	}
+	arr[i] = NULL;
+	return (arr);
 }

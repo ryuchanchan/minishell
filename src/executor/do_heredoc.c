@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   do_heredoc.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: toryoshi </var/mail/toryoshi>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/21 00:45:49 by toryoshi          #+#    #+#             */
+/*   Updated: 2023/03/21 00:45:53 by toryoshi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "do_heredoc.h"
 
-void initialize_heredoc(int tmpin, int tmpout)
+void	initialize_heredoc(int tmpin, int tmpout)
 {
 	if (dup2(tmpin, STDIN_FILENO) < 0)
 		fatal_error("executor");
@@ -20,7 +32,8 @@ int	do_heredoc(char *str, int tmpin, int tmpout)
 	while (line)
 	{
 		line = readline(PREFIX_HEREDOC);
-		if (!line || ft_strncmp(line, str, ft_strlen(str) + 1) == 0 || get_flag() == SF_SIGINT)
+		if (!line || ft_strncmp(line, str, ft_strlen(str) + 1) == 0 || \
+				get_flag() == SF_SIGINT)
 		{
 			free(line);
 			break ;

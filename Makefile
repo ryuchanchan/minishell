@@ -20,6 +20,7 @@ SRCS		=	$(DIR_SRC)/main.c					\
 				$(DIR_SRC)/builtin/echo.c			\
 				$(DIR_SRC)/builtin/env.c			\
 				$(DIR_SRC)/builtin/cd.c				\
+				$(DIR_SRC)/builtin/export.c			\
 				$(DIR_SRC)/builtin/key_value.c		\
 				$(DIR_SRC)/builtin/pwd.c			\
 				$(DIR_SRC)/builtin/exit.c			\

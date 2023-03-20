@@ -28,7 +28,7 @@ static void redirect_input(t_list *redirections, int *fdin, int tmpin, int tmpou
             continue ;
         }
         update_fd(fdin, fd, r_p->filename);
-        if (fd < 0)
+        if (fd < 0 || get_flag() == SF_SIGINT)
             return ;
         redirection = redirection->next;
     }
@@ -66,7 +66,7 @@ bool do_redirect(t_list *command, int fdin, int tmpin, int tmpout)
 	int		pipe_fd[2];
 
 	redirect_input(((t_command *)command->content)->redirections, &fdin, tmpin, tmpout);
-	if (fdin < 0)
+	if (fdin < 0 || get_flag() == SF_SIGINT)
 		return (true);
     if (dup2(fdin, STDIN_FILENO) < 0)
 		fatal_error("executor");

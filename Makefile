@@ -12,7 +12,8 @@ SRCS		=	$(DIR_SRC)/main.c					\
 				$(DIR_SRC)/utils/string_array.c		\
 				$(DIR_SRC)/utils/file_stat.c		\
 				$(DIR_SRC)/error/ms_error.c			\
-				$(DIR_SRC)/signal/set_signal.c		\
+				$(DIR_SRC)/signal/signal_flag.c		\
+				$(DIR_SRC)/signal/ms_signal.c		\
 				$(DIR_SRC)/state/ms_state.c			\
 				$(DIR_SRC)/env/key_value.c			\
 				$(DIR_SRC)/env/ms_env.c				\

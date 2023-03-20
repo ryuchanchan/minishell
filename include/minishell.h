@@ -1,7 +1,7 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include "set_signal.h"
+# include "ms_signal.h"
 # include "ms_error.h"
 # include "ms_state.h"
 # include "lexer.h"

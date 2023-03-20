@@ -6,6 +6,8 @@
 typedef struct s_ms_state {
     char	**envp;
     int		exit_status;
+    int     tmpin;
+    int     tmpout;
 } t_ms_state;
 
 t_ms_state  *construct_ms_state(char **envp);

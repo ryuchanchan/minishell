@@ -1,17 +1,16 @@
-#include "set_signal.h"
+#include "ms_signal.h"
 
 static void	signal_interrupt_handler(int sig){
 	if (sig != SIGINT)
 		return;
-	ft_printf("\n");
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
+	set_flag(SF_SIGINT);
 }
 
 static void	signal_quit_handler(int sig){
 	if (sig != SIGQUIT)
 		return;
+	if (get_flag() == SF_NONE)
+		set_flag(SF_SIGQUIT);
 	rl_redisplay();
 }
 

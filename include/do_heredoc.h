@@ -7,6 +7,7 @@
 
 # include "command.h"
 # include "ms_error.h"
+# include "signal_flag.h"
 
 # define PREFIX_HEREDOC "heredoc> "
 

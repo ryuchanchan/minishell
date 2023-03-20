@@ -14,14 +14,14 @@ t_signal_flag   get_flag(void)
 
 void    set_flag(t_signal_flag new)
 {
-    if (new == SF_NONE)
+    if (new == SF_NONE || new == SF_SIGINT)
     {
-        g_flag = SF_NONE;
+        g_flag = new;
         return ;
     }
     if (g_flag != SF_NONE)
         return ;
-    if (new == SF_SIGINT || new == SF_SIGQUIT)
+    if (new == SF_SIGQUIT)
         g_flag = new;
 }
 

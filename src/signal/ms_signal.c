@@ -3,13 +3,14 @@
 static void	signal_interrupt_handler(int sig){
 	if (sig != SIGINT)
 		return;
-	if (get_flag() == SF_NONE)
-		set_flag(SF_SIGINT);
+	set_flag(SF_SIGINT);
 }
 
 static void	signal_quit_handler(int sig){
 	if (sig != SIGQUIT)
 		return;
+	if (get_flag() == SF_NONE)
+		set_flag(SF_SIGQUIT);
 	rl_redisplay();
 }
 

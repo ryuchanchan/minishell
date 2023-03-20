@@ -52,7 +52,7 @@ static int	wait_childs(t_list *commands, bool is_piped)
 		}
 		command = command->next;
 	}
-	if (has_signal_interrupt())
+	if (has_signal_interrupt() && status != 0)
 		ft_printf("\n");
 	return (status);
 }

@@ -23,13 +23,13 @@ static void	expand(char **str_p, t_ms_state *state_p)
 	*str_p = expanded;
 }
 
-bool	validate_and_expand(t_list *tokens, t_ms_state *state_p, bool is_quote_not_closed)
+bool	check_and_expand(t_list *tokens, t_ms_state *state_p, bool is_open_quote)
 {
 	t_list			*list;
 	t_token			*t_p;
 	t_token_type	type_prev;
 
-	if (is_quote_not_closed)
+	if (is_open_quote)
 		return (quote_error_return_true());
 	type_prev = T_PIPE;
 	list = tokens;

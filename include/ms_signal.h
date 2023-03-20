@@ -1,5 +1,5 @@
-#ifndef SET_SIGNAL_H
-# define SET_SIGNAL_H
+#ifndef MS_SIGNAL_H
+# define MS_SIGNAL_H
 
 # include <signal.h>
 # include <stdio.h>
@@ -9,6 +9,6 @@
 # include "../libft/include/libft.h"
 # include "signal_flag.h"
 
-void set_signal(void);
+void	set_signal(void);
 
 #endif

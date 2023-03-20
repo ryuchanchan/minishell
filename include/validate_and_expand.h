@@ -5,6 +5,6 @@
 # include "ms_state.h"
 # include "expansion.h"
 
-bool	validate_and_expand(t_list *tokens, t_ms_state *state_p, bool is_quote_not_closed);
+bool	check_and_expand(t_list *tokens, t_ms_state *state_p, bool is_open_quote);
 
 #endif

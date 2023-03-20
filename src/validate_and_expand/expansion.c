@@ -1,6 +1,6 @@
 #include "expansion.h"
 
-static bool should_replace_var(t_status_quotes status, const char *src, size_t i)
+static bool should_replace_var(t_q_status status, const char *src, size_t i)
 {
 	if (status == IN_SINGLE_QUOTE || src[i] != '$')
 		return (false);

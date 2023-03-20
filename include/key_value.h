@@ -1,11 +1,12 @@
 #ifndef KEY_VALUE_H
-
 # define KEY_VALUE_H
+
 # define KV_SEP "="
 
 # include "string_array.h"
 
-typedef struct e_kv {
+typedef struct e_kv
+{
 	char	*key;
 	char	*value;
 }	t_kv;

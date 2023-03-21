@@ -19,26 +19,27 @@ static bool is_numerical(char *s)
     return (true);
 }
 
-void exec_exit(char **splitted, char *line)
+int	builtin_exit(char **args, char ***envp_p)
 {
     int status;
 
     printf("exit\n");
-    if (!splitted[1])
+    if (!args[1])
         exit(0);
-    if (!is_numerical(splitted[1]))
+    if (!is_numerical(args[1]))
     {
-        printf("exit: %s: numeric argument required\n", splitted[1]);
+        printf("exit: %s: numeric argument required\n", args[1]);
         exit(255);
-        return ;
     }
-    if (splitted[2])
+    if (args[2])
     {
         printf("exit: too many arguments\n");//どいう条件か？
-        return ;
+        return (1);
     }
-    status = ft_atoi(splitted[1]);
-    sa_free(splitted);
-    free(line);
+    status = ft_atoi(args[1]);
+    sa_free(args);
+    free(envp_p);
     exit(status);
+
+    return (0);
 }

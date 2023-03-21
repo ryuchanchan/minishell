@@ -59,19 +59,34 @@ static int	print_setted(char **envp)
 	return (0);
 }
 
+// 追加処理
+// &args[1] および envpの環境変数が同じものがないか見て
+// &arg[i]に=が含まれることを確認
+// &arg[i]の$name取得
+// $nameが&arg[i+1]以降のnameと重複がないことを確認
+// $nameとenvpないの変数のnameと重複があるか確認
+// 	ある-> あった要素を更新
+//	ない-> 要素を追加
 int	builtin_export(char **args, char ***envp_p)
 {
+    size_t i;
+    t_kv *kv_p;
+
 	if (!args[1])
 		return (print_setted(*envp_p));
 	if (is_invalid_argument(args))
 		return (1);
-	// 追加処理
-	// &args[1] および envpの環境変数が同じものがないか見て
-	// &arg[i]に=が含まれることを確認
-	// &arg[i]の$name取得
-	// $nameが&arg[i+1]以降のnameと重複がないことを確認
-	// $nameとenvpないの変数のnameと重複があるか確認
-	// 	ある-> あった要素を更新
-	//	ない-> 要素を追加
-	return (0);
+    i = 1;
+    while (args[i])
+    {
+        kv_p = construct_kv(args[i]);
+        if (!kv_p)
+            kv_p = env_find(*envp_p, args[i]);
+        i++;
+        if (!kv_p)
+            continue ;
+        env_add(envp_p, kv_p);
+        kv_free(&kv_p);
+    }
+    return (0);
 }

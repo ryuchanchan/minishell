@@ -53,7 +53,6 @@ static void	after_readline(t_ms_state *state_p, char *line)
 	if (get_flag() == SF_SIGINT)
 	{
 		rl_on_new_line();
-		free(line);
 		state_p->exit_status = 1;
 		return ;
 	}

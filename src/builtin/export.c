@@ -30,63 +30,52 @@ static bool is_invalid_name(char *str)
 	return (false);
 }
 
-static bool	is_invalid_argument(char **args)
-{
-	size_t	i;
-
-	i = 0;
-	while (args[i])
-	{
-		if (is_invalid_name(args[i]))
-		{
-			ft_putstr_fd("export: `", STDERR_FILENO);
-			ft_putstr_fd(args[i], STDERR_FILENO);
-			ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
-			return (true);
-		}
-		i++;
-	}
-	return (false);
-}
-
 static int	print_setted(char **envp)
 {
 	size_t	i;
 
 	i = 0;
 	while (envp[i])
-		ft_printf("declare -x %s\n", envp[i++]);
+	{
+		if (ft_strncmp(envp[i], "_=", 2) != 0)
+			ft_printf("declare -x %s\n", envp[i]);
+		i++;
+	}
 	return (0);
 }
 
-// 追加処理
-// &args[1] および envpの環境変数が同じものがないか見て
-// &arg[i]に=が含まれることを確認
-// &arg[i]の$name取得
-// $nameが&arg[i+1]以降のnameと重複がないことを確認
-// $nameとenvpないの変数のnameと重複があるか確認
-// 	ある-> あった要素を更新
-//	ない-> 要素を追加
+static void	export_one(char *arg, char ***envp_p, int *status_p)
+{
+	t_kv	*kv_p;
+
+	if (is_invalid_name(arg))
+	{
+		ft_putstr_fd("export: `", STDERR_FILENO);
+		ft_putstr_fd(arg, STDERR_FILENO);
+		ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
+		*status_p = 1;
+		return ;
+	}
+	if (!ft_strchr(arg, '=') || ft_strncmp(arg, "_=", 2) == 0)
+		return ;
+	kv_p = construct_kv(arg);
+	if (!kv_p)
+		fatal_error("export");
+    env_add(envp_p, kv_p);
+    destruct_kv(&kv_p);
+	return ;
+}
+
 int	builtin_export(char **args, char ***envp_p)
 {
-    size_t i;
-    t_kv *kv_p;
+	int		status;
+	size_t	i;
 
 	if (!args[1])
 		return (print_setted(*envp_p));
-	if (is_invalid_argument(args))
-		return (1);
+	status = 0;
     i = 1;
     while (args[i])
-    {
-        kv_p = construct_kv(args[i]);
-        if (!kv_p)
-            kv_p = env_find(*envp_p, args[i]);
-        i++;
-        if (!kv_p)
-            continue ;
-        env_add(envp_p, kv_p);
-        kv_free(&kv_p);
-    }
-    return (0);
+		export_one(args[i++], envp_p, &status);
+    return (status);
 }

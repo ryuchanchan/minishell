@@ -6,7 +6,7 @@
 /*   By: toryoshi </var/mail/toryoshi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 00:41:36 by toryoshi          #+#    #+#             */
-/*   Updated: 2023/03/21 00:42:08 by toryoshi         ###   ########.fr       */
+/*   Updated: 2023/03/22 22:38:56 by toryoshi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,17 @@ static int	do_exec_builtin(char **args, char ***envp_p)
 	if (ft_strcmp(args[0], "echo") == 0)
 		return (builtin_echo(args, envp_p));
 	if (ft_strcmp(args[0], "cd") == 0)
-		return builtin_cd(args, envp_p);
+		return (builtin_cd(args, envp_p));
 	if (ft_strcmp(args[0], "env") == 0)
 		return (builtin_env(args, envp_p));
 	if (ft_strcmp(args[0], "pwd") == 0)
-		return builtin_pwd(args, envp_p);
+		return (builtin_pwd(args, envp_p));
 	if (ft_strcmp(args[0], "export") == 0)
-		return builtin_export(args, envp_p);
+		return (builtin_export(args, envp_p));
 	if (ft_strcmp(args[0], "unset") == 0)
-		return builtin_unset(args, envp_p);
+		return (builtin_unset(args, envp_p));
 	if (ft_strcmp(args[0], "exit") == 0)
-		return builtin_exit(args, envp_p);
-
+		return (builtin_exit(args, envp_p));
 	return (-1);
 }
 

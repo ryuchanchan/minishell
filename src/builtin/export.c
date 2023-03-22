@@ -6,13 +6,13 @@
 /*   By: toryoshi </var/mail/toryoshi>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/21 14:16:52 by toryoshi          #+#    #+#             */
-/*   Updated: 2023/03/21 16:36:52 by toryoshi         ###   ########.fr       */
+/*   Updated: 2023/03/22 22:44:58 by toryoshi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ms_builtin.h"
 
-static bool is_invalid_name(char *str)
+static bool	is_invalid_name(char *str)
 {
 	size_t	i;
 
@@ -61,8 +61,8 @@ static void	export_one(char *arg, char ***envp_p, int *status_p)
 	kv_p = construct_kv(arg);
 	if (!kv_p)
 		fatal_error("export");
-    env_add(envp_p, kv_p);
-    destruct_kv(&kv_p);
+	env_add(envp_p, kv_p);
+	destruct_kv(&kv_p);
 	return ;
 }
 
@@ -74,8 +74,8 @@ int	builtin_export(char **args, char ***envp_p)
 	if (!args[1])
 		return (print_setted(*envp_p));
 	status = 0;
-    i = 1;
-    while (args[i])
+	i = 1;
+	while (args[i])
 		export_one(args[i++], envp_p, &status);
-    return (status);
+	return (status);
 }

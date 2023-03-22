@@ -1,51 +1,81 @@
-#include "minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: toryoshi </var/mail/toryoshi>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/21 14:16:52 by toryoshi          #+#    #+#             */
+/*   Updated: 2023/03/21 16:36:52 by toryoshi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-void env_add(char ***envp_p, t_kv *kv_p)
+#include "ms_builtin.h"
+
+static bool is_invalid_name(char *str)
 {
-    ssize_t index;
-    size_t  size;
-    size_t  i;
-    char    *joined;
-    char    **new;
+	size_t	i;
 
-    joined = kv_join(kv_p);
-    index = env_get_index(*envp_p, kv_p->key);
-    if (index >= 0)
-    {
-        free((*envp_p)[index]);
-        (*envp_p)[index] = joined;
-        return ;
-    }
-    size = sa_size((const char **)(*envp_p));
-    new = malloc(sizeof(char *) * (size + 1));
-    i = 0;
-    while ((*envp_p)[i])
-    {
-        new[i] = (*envp_p)[i];
-        i++;
-    }
-    free(*envp_p);
-    new[size - 1] = joined;
-    new[size] = NULL;
-    *envp_p = new;
+	if (!str || str[0] == '\0' || str[0] == '=')
+		return (true);
+	i = 0;
+	while (str[i] != '\0' && str[i] != '=')
+	{
+		if (i == 0 && ft_isdigit(str[0]))
+			return (true);
+		if (!ft_isalnum(str[i]) && str[i] != '_')
+			return (true);
+		i++;
+	}
+	return (false);
+}
+
+static int	print_setted(char **envp)
+{
+	size_t	i;
+
+	i = 0;
+	while (envp[i])
+	{
+		if (ft_strncmp(envp[i], "_=", 2) != 0)
+			ft_printf("declare -x %s\n", envp[i]);
+		i++;
+	}
+	return (0);
+}
+
+static void	export_one(char *arg, char ***envp_p, int *status_p)
+{
+	t_kv	*kv_p;
+
+	if (is_invalid_name(arg))
+	{
+		ft_putstr_fd("export: `", STDERR_FILENO);
+		ft_putstr_fd(arg, STDERR_FILENO);
+		ft_putendl_fd("': not a valid identifier", STDERR_FILENO);
+		*status_p = 1;
+		return ;
+	}
+	if (!ft_strchr(arg, '=') || ft_strncmp(arg, "_=", 2) == 0)
+		return ;
+	kv_p = construct_kv(arg);
+	if (!kv_p)
+		fatal_error("export");
+    env_add(envp_p, kv_p);
+    destruct_kv(&kv_p);
+	return ;
 }
 
 int	builtin_export(char **args, char ***envp_p)
 {
-    size_t i;
-    t_kv *kv_p;
-    
+	int		status;
+	size_t	i;
+
+	if (!args[1])
+		return (print_setted(*envp_p));
+	status = 0;
     i = 1;
     while (args[i])
-    {
-        kv_p = kv_construct(args[i]);
-        if (!kv_p)
-            kv_p = env_get_value(*envp_p, args[i]);
-        i++;
-        if (!kv_p)
-            continue;
-        env_add(envp_p, kv_p);
-        kv_free(&kv_p);
-    }
-    return (0);
+		export_one(args[i++], envp_p, &status);
+    return (status);
 }

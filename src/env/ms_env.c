@@ -50,26 +50,11 @@ t_kv	*env_find(const char **envp, const char *key)
 	return (kv_p);
 }
 
-/*
-void	env_add(char ***envp_p, t_kv *kv_p)
+static void	update_envp(char ***envp_p, char *str, size_t size)
 {
-	ssize_t	index;
-	size_t	size;
 	size_t	i;
-	char	*joined;
 	char	**new;
 
-	joined = kv_to_string(kv_p);
-	if (!joined)
-		fatal_error("env");
-	index = env_get_index((const char **)*envp_p, (const char *)kv_p->key);
-	if (index >= 0)
-	{
-		free((*envp_p)[index]);
-		(*envp_p)[index] = joined;
-		return ;
-	}
-	size = sa_size((const char **)(*envp_p));
 	new = malloc(sizeof(char *) * (size + 1));
 	if (!new)
 		fatal_error("env");
@@ -80,9 +65,28 @@ void	env_add(char ***envp_p, t_kv *kv_p)
 		i++;
 	}
 	free(*envp_p);
-	new[size - 1] = joined;
+	new[size - 2] = str;
+	new[size - 1] = (*envp_p)[i - 1];
 	new[size] = NULL;
 	*envp_p = new;
+}
+
+void	env_add(char ***envp_p, t_kv *kv_p)
+{
+	ssize_t	index;
+	char	*str;
+
+	str = kv_to_string(kv_p);
+	if (!str)
+		fatal_error("env");
+	index = env_get_index((const char **)*envp_p, (const char *)kv_p->key);
+	if (index >= 0)
+	{
+		free((*envp_p)[index]);
+		(*envp_p)[index] = str;
+		return ;
+	}
+	update_envp(envp_p, str, sa_size((const char **)(*envp_p)));
 }
 
 void	env_delete(char ***envp_p, char *key)
@@ -112,4 +116,3 @@ void	env_delete(char ***envp_p, char *key)
 	free(*envp_p);
 	*envp_p = new;
 }
-*/

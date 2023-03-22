@@ -9,7 +9,7 @@ int	builtin_pwd(char **args, char ***envp_p)
     if (getcwd(pwd, 512) == NULL)
     {
         perror("pwd");
-        return (1);
+        exit(1);
     }
     printf("%s\n", pwd);
     return (0);

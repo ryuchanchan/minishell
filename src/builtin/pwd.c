@@ -14,11 +14,11 @@
 
 int	builtin_pwd(char **args, char ***envp_p)
 {
-	char	buf[PATH_MAX];
+	char	buf[PATH_MAX + 1];
 
 	(void)envp_p;
 	(void)args;
-	if (getcwd(buf, PATH_MAX) == NULL)
+	if (getcwd(buf, PATH_MAX + 1) == NULL)
 	{
 		perror("pwd");
 		return (1);

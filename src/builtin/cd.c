@@ -83,7 +83,7 @@ int	builtin_cd(char **args, char ***envp_p)
 {
 	int		ret;
 	char	*oldpwd;
-	char	buf_pwd[PATH_MAX];
+	char	buf_pwd[PATH_MAX + 1];
 
 	oldpwd = get_pwd(*envp_p);
 	if (!args[1])
@@ -92,7 +92,7 @@ int	builtin_cd(char **args, char ***envp_p)
 		ret = cd_with_arg(args[1]);
 	if (ret == 0)
 	{
-		if (!getcwd(buf_pwd, PATH_MAX))
+		if (!getcwd(buf_pwd, PATH_MAX + 1))
 			fatal_error("cd");
 		env_set("OLDPWD", oldpwd, envp_p);
 		env_set("PWD", buf_pwd, envp_p);

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pwd.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: toryoshi </var/mail/toryoshi>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/03/22 22:42:35 by toryoshi          #+#    #+#             */
+/*   Updated: 2023/03/22 22:42:57 by toryoshi         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	builtin_pwd(char **args, char ***envp_p)
@@ -9,8 +21,8 @@ int	builtin_pwd(char **args, char ***envp_p)
     if (getcwd(pwd, 512) == NULL)
     {
         perror("pwd");
-        exit(1);
+        return (1);
     }
-    printf("%s\n", pwd);
+    ft_printf("%s\n", pwd);
     return (0);
 }

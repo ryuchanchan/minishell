@@ -3,20 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: toryoshi </var/mail/toryoshi>              +#+  +:+       +#+        */
+/*   By: rykawamu </var/mail/rykawamu>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/22 22:45:34 by toryoshi          #+#    #+#             */
-/*   Updated: 2023/03/22 22:46:55 by toryoshi         ###   ########.fr       */
+/*   Created: 2023/03/22 22:45:34 by rykawamu          #+#    #+#             */
+/*   Updated: 2023/03/22 22:46:55 by rykawamu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-
-void	exit_error(char *msg)
-{
-	perror(msg);
-	exit(1);
-}
+#include "ms_builtin.h"
 
 static bool	is_numerical(char *s)
 {
@@ -31,26 +25,27 @@ static bool	is_numerical(char *s)
 	return (true);
 }
 
-int	builtin_exit(char **args, char ***envp_p)
+int	builtin_exit(char **args, char ***envp_p, int exit_status)
 {
 	int	status;
 
-	printf("exit\n");
+	(void)envp_p;
+	ft_printf("exit\n");
 	if (!args[1])
-		exit(0);
+		exit(exit_status);
 	if (!is_numerical(args[1]))
 	{
-		printf("exit: %s: numeric argument required\n", args[1]);
+		ft_putstr_fd("exit: ", STDERR_FILENO);
+		ft_putstr_fd(args[1], STDERR_FILENO);
+		ft_putendl_fd(": numeric argument required", STDERR_FILENO);
 		exit(255);
 	}
 	if (args[2])
 	{
-		printf("exit: too many arguments\n");//どいう条件か？
+		ft_putendl_fd("exit: too many arguments", STDERR_FILENO);
 		return (1);
 	}
 	status = ft_atoi(args[1]);
-	sa_free(args);
-	free(envp_p);
-	exit(status);
+	exit((unsigned char)status);
 	return (0);
 }

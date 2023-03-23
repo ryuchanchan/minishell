@@ -26,6 +26,6 @@ int	builtin_cd(char **args, char ***envp_p);
 int	builtin_pwd(char **args, char ***envp_p);
 int	builtin_export(char **args, char ***envp_p);
 int	builtin_unset(char **args, char ***envp_p);
-int	builtin_exit(char **args, char ***envp_p);
+int	builtin_exit(char **args, char ***envp_p, int exit_status);
 
 #endif

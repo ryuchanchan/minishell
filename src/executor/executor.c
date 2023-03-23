@@ -87,7 +87,7 @@ int	executor(t_list *commands, t_ms_state *state_p)
 			command = command->next;
 			continue ;
 		}
-		do_exec(command->content, &(state_p->envp), is_piped);
+		do_exec(command->content, state_p, is_piped);
 		command = command->next;
 	}
 	finalize_fds(state_p->tmpin, state_p->tmpout);

@@ -14,11 +14,15 @@
 
 int	builtin_pwd(char **args, char ***envp_p)
 {
-	(void)envp_p;
-	(void)args;
-
-	char pwd[512];
-	getcwd(pwd, 512);
-	printf("%s\n", pwd);
-	return (0);
+    char pwd[512];
+    
+    (void)envp_p;
+    (void)args;
+    if (getcwd(pwd, 512) == NULL)
+    {
+        perror("pwd");
+        return (1);
+    }
+    ft_printf("%s\n", pwd);
+    return (0);
 }

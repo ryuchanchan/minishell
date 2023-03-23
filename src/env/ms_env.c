@@ -64,10 +64,10 @@ static void	update_envp(char ***envp_p, char *str, size_t size)
 		new[i] = (*envp_p)[i];
 		i++;
 	}
-	free(*envp_p);
 	new[size - 2] = str;
 	new[size - 1] = (*envp_p)[i - 1];
 	new[size] = NULL;
+	free(*envp_p);
 	*envp_p = new;
 }
 

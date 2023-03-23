@@ -22,12 +22,13 @@ static void	initialize_fds(int *tmpin_p, int *tmpout_p)
 		fatal_error("executor");
 }
 
-static void	finalize_fds(int tmpin, int tmpout)
+static int	finalize_fds(int tmpin, int tmpout)
 {
 	safe_dup2(tmpin, STDIN_FILENO, "executor");
 	safe_dup2(tmpout, STDOUT_FILENO, "executor");
 	close(tmpin);
 	close(tmpout);
+	return (1);
 }
 
 static int	get_exit_status(int status)
@@ -80,16 +81,14 @@ int	executor(t_list *commands, t_ms_state *state_p)
 		if (do_redirect(command, fdin, state_p->tmpin, state_p->tmpout))
 		{
 			if (get_flag() == SF_SIGINT)
-			{
-				finalize_fds(state_p->tmpin, state_p->tmpout);
-				return (1);
-			}
+				return (finalize_fds(state_p->tmpin, state_p->tmpout));
+			((t_command *)command->content)->status = 1;
 			command = command->next;
 			continue ;
 		}
 		do_exec(command->content, state_p, is_piped);
 		command = command->next;
 	}
-	finalize_fds(state_p->tmpin, state_p->tmpout);
+	(void)finalize_fds(state_p->tmpin, state_p->tmpout);
 	return (wait_childs(commands, is_piped));
 }

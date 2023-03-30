@@ -12,7 +12,7 @@
 
 #include "signal_flag.h"
 
-volatile t_signal_flag	g_flag;
+static volatile t_signal_flag	g_flag;
 
 void	reset_flag(void)
 {

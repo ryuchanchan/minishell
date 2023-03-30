@@ -28,13 +28,15 @@ static void	print_array(char **splitted, const size_t begin)
 
 int	builtin_echo(char **args, char ***envp_p)
 {
+	size_t	i;
+
 	(void)envp_p;
-	if (args[1] && ft_strcmp(args[1], "-n") == 0)
-	{
-		print_array(args, 2);
-		return (0);
-	}
-	print_array(args, 1);
-	ft_printf("\n");
+	i = 1;
+	while (args[i] && ft_strcmp(args[i], "-n") == 0)
+		i++;
+	if (args[i])
+		print_array(args, i);
+	if (i == 1)
+		ft_printf("\n");
 	return (0);
 }

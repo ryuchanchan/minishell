@@ -31,5 +31,6 @@ static void	signal_quit_handler(int sig)
 void	set_signal(void)
 {
 	signal(SIGINT, signal_interrupt_handler);
+	signal(SIGQUIT, SIG_IGN);
 	signal(SIGQUIT, signal_quit_handler);
 }

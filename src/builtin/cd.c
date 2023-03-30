@@ -90,10 +90,8 @@ int	builtin_cd(char **args, char ***envp_p)
 		ret = cd_without_arg(*envp_p);
 	else
 		ret = cd_with_arg(args[1]);
-	if (ret == 0)
+	if (ret == 0 || getcwd(buf_pwd, PATH_MAX + 1))
 	{
-		if (!getcwd(buf_pwd, PATH_MAX + 1))
-			fatal_error("cd");
 		env_set("OLDPWD", oldpwd, envp_p);
 		env_set("PWD", buf_pwd, envp_p);
 	}

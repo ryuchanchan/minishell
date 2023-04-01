@@ -72,12 +72,18 @@ static void	after_readline(t_ms_state *state_p, char *line)
 void	minishell(t_ms_state *state_p)
 {
 	char	*line;
+	bool	should_run_once;
 
+	should_run_once = false;
 	line = "";
 	while (line)
 	{
 		reset_flag();
-		line = readline(PREFIX_SHELL);
+		if (should_run_once)
+			line = NULL;
+		else
+			line = readline(PREFIX_SHELL);
+		should_run_once = !isatty(STDIN_FILENO);
 		after_readline(state_p, line);
 		free(line);
 	}

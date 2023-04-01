@@ -24,8 +24,10 @@
 # define MSG_SYNTAX_ERR_SUFFIX "'"
 # define STAT_SYNTAX_ERR 258
 
+# define MSG_NO_PERMISSION ": Permission denied"
 # define MSG_IS_DIRECTORY ": is a directory"
 # define MSG_CMD_NOT_FOUND ": command not found"
+# define STAT_NO_PERMISSION 126
 # define STAT_IS_DIRECTORY 126
 # define STAT_CMD_NOT_FOUND 127
 

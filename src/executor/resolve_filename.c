@@ -78,12 +78,16 @@ static char	*resolve_filename_with_path(char *command, char ***envp_p)
 			fatal_error("resolve_filename");
 		if (is_directory(filepath))
 			exit_with_print(command, MSG_IS_DIRECTORY, STAT_IS_DIRECTORY);
+		if (access(filepath, R_OK | X_OK) < 0)
+			exit_with_print(command, MSG_NO_PERMISSION, STAT_NO_PERMISSION);
 		return (filepath);
 	}
 	filepath = find_exist_path(command, kv_path->value);
 	destruct_kv(&kv_path);
 	if (!filepath)
 		exit_with_print(command, MSG_CMD_NOT_FOUND, STAT_CMD_NOT_FOUND);
+	if (access(filepath, R_OK | X_OK) < 0)
+		exit_with_print(command, MSG_NO_PERMISSION, STAT_NO_PERMISSION);
 	return (filepath);
 }
 
@@ -95,6 +99,8 @@ char	*resolve_filename(char *arg_0, char ***envp_p)
 	{
 		if (is_directory(arg_0))
 			exit_with_print(arg_0, MSG_IS_DIRECTORY, STAT_IS_DIRECTORY);
+		if (access(arg_0, R_OK | X_OK) < 0)
+			exit_with_print(arg_0, MSG_NO_PERMISSION, STAT_NO_PERMISSION);
 		dupped = ft_strdup(arg_0);
 		if (!dupped)
 			fatal_error("resolve_filename");

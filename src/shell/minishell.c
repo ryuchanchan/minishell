@@ -62,7 +62,7 @@ static void	after_readline(t_ms_state *state_p, char *line)
 		run(line, state_p);
 		if (has_signal_interrupt() && state_p->exit_status != 0)
 		{
-			ft_printf("\n");
+			ft_putstr_fd("\n", STDOUT_FILENO);
 			rl_on_new_line();
 		}
 		add_history(line);

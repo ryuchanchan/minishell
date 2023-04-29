@@ -38,7 +38,10 @@ static int	print_setted(char **envp)
 	while (envp[i])
 	{
 		if (ft_strncmp(envp[i], "_=", 2) != 0)
-			ft_printf("declare -x %s\n", envp[i]);
+		{
+			ft_putstr_fd("declare -x ", STDOUT_FILENO);
+			ft_putendl_fd(envp[i], STDOUT_FILENO);
+		}
 		i++;
 	}
 	return (0);

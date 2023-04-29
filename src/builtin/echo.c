@@ -19,9 +19,9 @@ static void	print_array(char **splitted, const size_t begin)
 	i = begin;
 	while (splitted[i])
 	{
-		ft_printf("%s", splitted[i]);
+		ft_putstr_fd(splitted[i], STDOUT_FILENO);
 		if (splitted[i + 1])
-			ft_printf(" ");
+			ft_putstr_fd(" ", STDOUT_FILENO);
 		i++;
 	}
 }
@@ -37,6 +37,6 @@ int	builtin_echo(char **args, char ***envp_p)
 	if (args[i])
 		print_array(args, i);
 	if (i == 1)
-		ft_printf("\n");
+		ft_putstr_fd("\n", STDOUT_FILENO);
 	return (0);
 }

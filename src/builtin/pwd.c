@@ -23,6 +23,6 @@ int	builtin_pwd(char **args, char ***envp_p)
 		perror("pwd");
 		return (1);
 	}
-	ft_printf("%s\n", buf);
+	ft_putendl_fd(buf, STDOUT_FILENO);
 	return (0);
 }

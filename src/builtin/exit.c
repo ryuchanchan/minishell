@@ -30,7 +30,7 @@ int	builtin_exit(char **args, char ***envp_p, int exit_status)
 	int	status;
 
 	(void)envp_p;
-	ft_printf("exit\n");
+	ft_putendl_fd("exit", STDOUT_FILENO);
 	if (!args[1])
 		exit(exit_status);
 	if (!is_numerical(args[1]))

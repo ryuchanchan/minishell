@@ -20,7 +20,7 @@ void	sa_print(const char **sa, size_t begin)
 	if (!sa)
 		return ;
 	while (sa[i])
-		ft_printf("%s\n", sa[i++]);
+		ft_putendl_fd((char *)sa[i++], STDOUT_FILENO);
 }
 
 void	sa_free(char **sa)

@@ -39,7 +39,7 @@ static int	finalize(t_ms_state *state_p)
 	status = state_p->exit_status;
 	destruct_ms_state(state_p);
 	rl_clear_history();
-	ft_printf("exit\n");
+	ft_putendl_fd("exit", STDOUT_FILENO);
 	return (status);
 }
 
